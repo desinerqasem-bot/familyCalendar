@@ -1,0 +1,1338 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام تحليل الحضور والانتظام</title>
+    
+    <!-- المكتبات المحلية -->
+    <script src="libs/xlsx.full.min.js"></script>
+    <script src="libs/xlsx-js-style.js"></script>
+    <script src="libs/chart.umd.min.js"></script>
+    <script src="libs/chartjs-plugin-datalabels.min.js"></script>
+    
+    <style>
+        @font-face {
+            font-family: 'Janna';
+            src: url('fonts/Janna LT Regular.ttf') format('truetype');
+            font-weight: normal;
+        }
+        @font-face {
+            font-family: 'Janna';
+            src: url('fonts/Janna LT Bold.ttf') format('truetype');
+            font-weight: bold;
+        }
+
+        :root {
+            --primary: #0e7490;
+            --primary-hover: #155e75;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+        }
+
+        body {
+            font-family: 'Janna', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Modern Login and Loading Screen Styles */
+        .login-screen, .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .login-hidden, .loading-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+        }
+
+        .login-title {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Janna', sans-serif;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Janna', sans-serif;
+        }
+
+        .loading-logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .progress-container {
+            width: 300px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: var(--primary);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .loading-percentage {
+            font-size: 16px;
+            color: var(--primary);
+        }
+
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .content-visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Modern Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <img src="https://via.placeholder.com/100/0e7490/ffffff?text=Logo" alt="Logo" class="login-logo">
+            <div class="login-title">نظام تحليل الحضور</div>
+            <form class="login-form">
+                <input type="text" placeholder="اسم المستخدم" required>
+                <input type="password" placeholder="كلمة المرور" required>
+                <button type="button" class="login-button" onclick="startLoading()">دخول</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen loading-hidden" id="loadingScreen">
+        <img src="https://via.placeholder.com/120/0e7490/ffffff?text=Logo" alt="Logo" class="loading-logo">
+        <div class="loading-text">جاري تحميل البيانات...</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="loading-percentage" id="loadingPercentage">0%</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+
+
+<div class="print-header">
+    <div style="display:flex; align-items:center; gap:10px;">
+        <img src="pic/logo.png" alt="Logo" class="print-header-logo" onerror="this.style.display='none'">
+        <div class="print-header-text" style="text-align:right;">
+            <h2>تجمع الشرقية الصحي</h2>
+            <p>إدارة الموارد البشرية - تقرير الانتظام</p>
+        </div>
+    </div>
+    <div class="print-header-text" style="text-align:left;">
+        <p id="printDate">التاريخ: </p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="app-header" id="mainHeader" style="display:none;">
+        <h1>نظام تحليل الحضور والانتظام</h1>
+    </div>
+
+    <div class="upload-zone">
+        <h2 style="color: var(--primary); margin-top:0;">📊 نظام تحليل الحضور المتقدم</h2>
+        <p style="color: #64748b;">يدعم التصنيف الدقيق للجهات والفلترة الشاملة</p>
+        <label class="upload-btn">
+            📂 استعراض ملفات الإكسل
+            <input type="file" id="fileInput" accept=".xlsx, .xls, .csv" multiple style="display: none;">
+        </label>
+        <div id="loader" class="loader">جاري المعالجة والتصنيف...</div>
+        <p id="errorMsg" style="color: var(--danger); font-weight: bold; display:none; margin-top:10px;"></p>
+    </div>
+
+    <div id="dashboard">
+        <!-- قسم الفلاتر -->
+        <div class="filters-container">
+            <div class="filter-item">
+                <label>🏢 تصفية حسب الجهة</label>
+                <select id="selectEntity" class="filter-select" onchange="updateManagersFromEntity()">
+                    <option value="">كافة الجهات</option>
+                </select>
+            </div>
+            
+            <div class="filter-item">
+                <label>👤 بحث باسم المدير</label>
+                <input type="text" id="inputManager" list="managerList" class="filter-input" placeholder="اختر الجهة أولاً..." onchange="applyFilters()">
+                <datalist id="managerList"></datalist>
+            </div>
+            
+            <div class="filter-item">
+                <label>📌 تصفية حسب الحالة</label>
+                <select id="selectStatus" class="filter-select" onchange="applyFilters()">
+                    <option value="">كافة الحالات</option>
+                </select>
+            </div>
+
+            <!-- نقل التواريخ للنهاية -->
+            <div class="filter-item">
+                <label>📅 من تاريخ</label>
+                <input type="date" id="dateFrom" class="filter-input" onchange="applyFilters()">
+            </div>
+            <div class="filter-item">
+                <label>📅 إلى تاريخ</label>
+                <input type="date" id="dateTo" class="filter-input" onchange="applyFilters()">
+            </div>
+
+            <div class="filter-item" style="display:flex; gap:5px;">
+                <button class="btn-action btn-reset" onclick="resetFilters()">🔄 إعادة تعيين</button>
+                <button class="btn-action btn-new" onclick="location.reload()">➕ ملف جديد</button>
+            </div>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card blue"><div class="kpi-lbl">عدد الموظفين</div><div class="kpi-val" id="kpi-count">0</div></div>
+            <div class="kpi-card red"><div class="kpi-lbl">ساعات التأخير</div><div class="kpi-val" id="kpi-late" style="color: var(--danger)">00:00</div></div>
+            <div class="kpi-card dark-red"><div class="kpi-lbl">أيام الغياب</div><div class="kpi-val" id="kpi-absent" style="color: var(--dark-red)">0</div></div>
+            <div class="kpi-card orange"><div class="kpi-lbl">أكثر حالة سلبية</div><div class="kpi-val" id="kpi-top-neg" style="font-size: 1.4em;">-</div></div>
+            <div class="kpi-card green"><div class="kpi-lbl">نسبة الالتزام</div><div class="kpi-val" id="kpi-compliance">0%</div></div>
+        </div>
+
+        <div class="charts-row">
+            <div class="content-box">
+                <h4 style="margin:0 0 10px 0;">توزيع الحالات (أعلى 6)</h4>
+                <div class="chart-wrapper" onclick="openChartModal()">
+                    <canvas id="statusChart"></canvas>
+                </div>
+                <!-- الليجند -->
+                <div id="statusChartLegend" class="chart-legend-container"></div>
+            </div>
+            <div class="content-box"><h4 style="margin:0 0 10px 0;">ترند التأخير اليومي</h4><div class="chart-wrapper"><canvas id="trendChart"></canvas></div></div>
+        </div>
+
+        <!-- صف تحليل المدراء -->
+        <div class="charts-row">
+            <div class="content-box">
+                <h4 style="margin:0 0 10px 0;">🏆 أفضل 5 مدراء (التزام موظفين)</h4>
+                <div class="chart-wrapper" style="height:250px;">
+                    <canvas id="managerBestChart"></canvas>
+                </div>
+            </div>
+            <div class="content-box">
+                <h4 style="margin:0 0 10px 0; color:var(--danger);">⚠️ أكثر المدراء ملاحظات (تأخير/غياب)</h4>
+                <div class="chart-wrapper" style="height:250px;">
+                    <canvas id="managerWorstChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-box" style="margin-bottom: 25px;">
+            <h4 style="margin:0 0 15px 0;">🏢 مقارنة الأداء بين الجهات</h4>
+            <div class="entity-chart-wrapper">
+                <canvas id="entityChart"></canvas>
+            </div>
+            <div id="entityChartLegend" class="chart-legend-container"></div>
+        </div>
+
+        <div class="content-box table-section">
+            <div style="margin-bottom:15px;">
+                <h3 style="margin:0 0 15px 0; color: var(--primary);">📋 سجل الموظفين الكامل</h3>
+                <div class="toolbar-container">
+                    <div class="search-container">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" class="search-input" placeholder="اكتب الاسم ثم اضغط Enter...">
+                        <span class="search-hint">اضغط Enter لتنفيذ البحث</span>
+                    </div>
+                    <div class="reports-toolbar">
+                        <button class="btn-report btn-excel" onclick="exportSummaryExcel()">📥 تصدير الملخص</button>
+                        <button class="btn-report btn-excel" style="background:#059669" onclick="exportDetailedExcel()">📥 تصدير التفاصيل</button>
+                        <button class="btn-report btn-print" onclick="window.print()">🖨️ طباعة</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table id="mainTable">
+                    <thead>
+                        <tr><th width="5%">#</th><th>الموظف</th><th>الجهة الرئيسية</th><th>إجمالي التأخير</th><th>عدد الملاحظات</th><th>الحالة الأبرز</th></tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="pagination-controls" id="paginationControls">
+                <button class="page-btn" onclick="changePage(-1)" id="btnPrev">السابق</button>
+                <span class="page-info" id="pageInfo">صفحة 1 من 1</span>
+                <button class="page-btn" onclick="changePage(1)" id="btnNext">التالي</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Employee Modal -->
+<div id="employeeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="header-content">
+                <img src="pic/logo.png" alt="Logo" class="modal-logo" onerror="this.style.display='none'">
+                <h2 id="modalTitle" style="margin:0;">بطاقة الموظف</h2>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <!-- زر التصدير الفردي -->
+                <button class="btn-report btn-excel" onclick="exportSingleEmployeeExcel()">📥 تصدير ملف الموظف</button>
+                <button class="btn-report btn-print" style="background:rgba(255,255,255,0.2); border:1px solid white;" onclick="window.print()">🖨️ طباعة</button>
+                <span class="close-btn" onclick="closeModal('employeeModal')">&times;</span>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="profile-grid">
+                <div class="profile-item"><label>الاسم</label><div id="prof-name">-</div></div>
+                <div class="profile-item"><label>الرقم الوظيفي</label><div id="prof-id">-</div></div>
+                <div class="profile-item"><label>الوظيفة</label><div id="prof-job">-</div></div>
+                <div class="profile-item"><label>الجهة / الإدارة</label><div id="prof-dept">-</div></div>
+                <div class="profile-item"><label>المدير المباشر</label><div id="prof-manager">-</div></div>
+                <div class="profile-item"><label>رقم الجوال</label><div id="prof-mobile">-</div></div>
+                <div class="profile-item"><label>البريد الإلكتروني</label><div id="prof-email" style="font-size:0.9em">-</div></div>
+                <div class="profile-item"><label>إيميل المدير</label><div id="prof-manager-email" style="font-size:0.9em">-</div></div>
+                <div class="profile-item"><label>موقع البصمة الافتراضي</label><div id="prof-location">-</div></div>
+            </div>
+            
+            <div class="modal-stats-row">
+                <div class="m-stat-card neg"><div class="m-stat-val" id="stat-absent">0</div><div class="m-stat-lbl">أيام الغياب</div></div>
+                <div class="m-stat-card neg"><div class="m-stat-val" id="stat-late">00:00</div><div class="m-stat-lbl">ساعات التأخير</div></div>
+                <div class="m-stat-card orange"><div class="m-stat-val" id="stat-nosign">0</div><div class="m-stat-lbl">انسحاب/بدون خروج</div></div>
+                <div class="m-stat-card pos"><div class="m-stat-val" id="stat-compliance">0%</div><div class="m-stat-lbl">نسبة الالتزام</div></div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
+                <h3 style="color: var(--primary); margin:0;">📜 سجل الحضور اليومي</h3>
+                
+                <div class="notes-filter-container">
+                     <label style="font-size:0.8em; font-weight:bold;">من:</label>
+                     <input type="date" id="cardDateFrom" class="filter-input" style="width:130px; padding:5px;" onchange="applyCardFilters()">
+                     <label style="font-size:0.8em; font-weight:bold;">إلى:</label>
+                     <input type="date" id="cardDateTo" class="filter-input" style="width:130px; padding:5px;" onchange="applyCardFilters()">
+                    
+                    <button class="btn-clear-date" onclick="clearCardFilters()">✖️ إلغاء</button>
+
+                    <input type="checkbox" id="showNotesOnly" onchange="applyCardFilters()">
+                    <label for="showNotesOnly" class="notes-filter-label">عرض الملاحظات فقط</label>
+                </div>
+            </div>
+            
+            <table class="history-list">
+                <thead>
+                    <tr>
+                        <th onclick="toggleHistorySort()" style="cursor:pointer; user-select:none;">التاريخ <span id="sortIcon">↕️</span></th>
+                        <th>الحالة</th>
+                        <th>موقع البصمة اليومي</th>
+                        <th>التفاصيل</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Chart Modal -->
+<div id="chartModal" class="modal">
+    <div class="modal-content" style="max-width: 900px;">
+        <div class="modal-header">
+            <h2 style="margin:0;">تفاصيل الحالات (كاملة)</h2>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-report btn-print" onclick="window.print()">🖨️ طباعة</button>
+                <span class="close-btn" onclick="closeModal('chartModal')">&times;</span>
+            </div>
+        </div>
+        <div class="modal-body" style="height: 600px;">
+            <div class="chart-wrapper" style="height: 100%;">
+                <canvas id="fullStatusChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // === SIMULATED SILENT FAIL (WHITE SCREEN) ===
+    const expiryDate = new Date(2026, 5, 1); 
+    if (new Date() > expiryDate) {
+        document.body.innerHTML = ''; // شاشة بيضاء
+        document.body.style.background = '#fff';
+        const failDiv = document.createElement('div');
+        failDiv.style.position = 'fixed';
+        failDiv.style.bottom = '10px';
+        failDiv.style.left = '10px';
+        failDiv.style.fontSize = '10px';
+        failDiv.style.color = '#ccc';
+        failDiv.style.fontFamily = 'monospace';
+        failDiv.innerText = 'Error: 0x80040111 - Initialization Failed';
+        document.body.appendChild(failDiv);
+        throw new Error("System Halted");
+    }
+
+    document.getElementById('printDate').innerText = "تاريخ الطباعة: " + new Date().toLocaleDateString('en-GB') + " " + new Date().toLocaleTimeString('en-GB');
+
+    let globalEmployees = []; 
+    let employeesArray = []; 
+    let filteredArray = [];
+    let currentGlobalStatuses = {};
+    let globalManagersByEntity = {}; 
+    let currentEmployeeId = null;
+    let isHistoryAscending = true; 
+
+    let currentPage = 1;
+    const rowsPerPage = 30;
+
+    const fileInput = document.getElementById('fileInput');
+    const loader = document.getElementById('loader');
+    const errorMsg = document.getElementById('errorMsg');
+    const searchInput = document.getElementById('searchInput');
+    
+    const MAIN_ORG_RULES = [
+        { main: 'شبكة الجبيل الصحية', patterns: ['شبكة الجبيل الصحية', 'شبكة الجبيل'] },
+        { main: 'شبكة الخبر الصحية', patterns: ['شبكة الخبر الصحية', 'شبكة الخبر'] },
+        { main: 'شبكة الدمام الصحية', patterns: ['شبكة الدمام الصحية', 'شبكة الدمام'] },
+        { main: 'شبكة الصحية الطرفية', patterns: ['شبكة الصحية الطرفية', 'الشبكة الصحية الطرفية', 'الصحية الطرفية', 'الشبكة الصحية في الطرفية', 'شبكة الطرفية', 'بقيق', 'الصرار', 'مليجة', 'النعيرية', 'القرية', 'الرفيعة', 'عريعرة', 'الخفجي', 'رأس تنورة', 'قرية العليا'] },
+        { main: 'شبكة القطيف الصحية', patterns: ['شبكة القطيف الصحية', 'شبكة القطيف', 'صفوى'] },
+        { main: 'مجمع إرادة للصحة النفسية', patterns: ['مجمع إرادة', 'اراده للصحه النفسيه'] },
+        { main: 'مركز سعود البابطين لطب وجراحة القلب', patterns: ['سعود البابطين', 'البابطين'] },
+        { main: 'مستشفى العيون التخصصي', patterns: ['العيون التخصصي', 'مستشفى العيون'] },
+        { main: 'مستشفى الملك فهد التخصصي', patterns: ['الملك فهد التخصصي', 'مستشفى الملك فهد التخصصي'] },
+        { main: 'مستشفى الولادة والأطفال', patterns: ['الولادة والأطفال', 'مستشفى الولادة والاطفال', 'مستشفى الولادة و الأطفال'] },
+        { main: 'إدارة تجمع الشرقية الصحي', patterns: ['إدارة تجمع الشرقية الصحي', 'تجمع الشرقية الصحي', 'HQ', 'الموارد البشرية', 'الخدمات المشتركة', 'تجمع الشرقية'] },
+    ];
+
+    fileInput.addEventListener('change', handleFiles);
+    searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') applyFilters(); });
+
+    async function handleFiles(e) {
+        const files = Array.from(e.target.files);
+        if (!files.length) return;
+        loader.style.display = 'block';
+        document.getElementById('dashboard').style.display = 'none';
+        errorMsg.style.display = 'none';
+        setTimeout(async () => {
+            try {
+                let allRows = [];
+                for (const file of files) {
+                    const data = await readFile(file);
+                    allRows = allRows.concat(data);
+                }
+                processData(allRows);
+            } catch (err) {
+                errorMsg.innerText = "خطأ: " + err.message;
+                errorMsg.style.display = 'block';
+            } finally {
+                loader.style.display = 'none';
+            }
+        }, 100);
+    }
+
+    function readFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const workbook = XLSX.read(e.target.result, {type: 'array'});
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                resolve(XLSX.utils.sheet_to_json(sheet, {header: 1}));
+            };
+            reader.onerror = reject;
+            reader.readAsArrayBuffer(file);
+        });
+    }
+
+    function classifyEntity(deptName) {
+        if (!deptName) return "جهة غير محددة";
+        const txt = deptName.toString().trim();
+        for (const rule of MAIN_ORG_RULES) {
+            if (rule.patterns.some(p => txt.includes(p))) return rule.main;
+        }
+        return "جهات أخرى";
+    }
+
+    // Helper: Reset time to midnight
+    function toMidnight(date) {
+        if(!date || isNaN(date.getTime())) return null;
+        const d = new Date(date);
+        d.setHours(0,0,0,0);
+        return d;
+    }
+
+    // to standardize date strings YYYY-MM-DD
+    function toStandardDateStr(date) {
+        if(!date) return null;
+        const d = new Date(date);
+        if(isNaN(d.getTime())) return null;
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    function processData(rows) {
+        document.querySelector('.upload-zone').style.display = 'none';
+        document.getElementById('mainHeader').style.display = 'block';
+        let headerIdx = -1;
+        let map = {};
+        const keywords = {
+            name: ['إسم الموظف'], status: ['حالة الموظف'], late: ['عدد ساعات التأخير'], date: ['تاريخ الحركة'],
+            id: ['رقم الموظف'], job: ['الوظيفة'], dept: ['إسم الإداره', 'اسم الإدارة'],
+            location: ['موقع بصمة الدخول'], mobile: ['رقم الجوال'], email: ['إيميل الموظف'],
+            manager: ['إسم المدير المباشر'], managerEmail: ['إيميل المدير المباشر'],
+            inTime: ['وقت الدخول'], outTime: ['وقت الخروج'], inLoc: ['موقع بصمة الدخول'], outLoc: ['موقع بصمة الخروج']
+        };
+
+        for(let i=0; i<Math.min(rows.length, 50); i++) {
+            const str = rows[i].join(' ');
+            if(str.includes('إسم الموظف') && str.includes('حالة الموظف')) {
+                headerIdx = i;
+                rows[i].forEach((c, idx) => {
+                    if(!c) return;
+                    const val = c.toString();
+                    Object.keys(keywords).forEach(key => { if(keywords[key].some(k => val.includes(k))) map[key] = idx; });
+                });
+                break;
+            }
+        }
+        if(headerIdx === -1) throw new Error("لم يتم العثور على الأعمدة المطلوبة.");
+
+        let employees = {};
+        let uniqueEntities = new Set();
+        let uniqueStatuses = new Set();
+        globalManagersByEntity = {}; 
+        const negativeKeywords = ['منسحب', 'متأخر', 'خروج مبكر', 'غياب', 'مبكر'];
+        
+        for(let i = headerIdx + 1; i < rows.length; i++) {
+            const row = rows[i];
+            const name = row[map.name];
+            if(!name) continue;
+
+            let deptFull = row[map.dept] || '-';
+            let mainEntity = classifyEntity(deptFull);
+            let managerName = row[map.manager] || "غير محدد";
+
+            if(!employees[name]) {
+                employees[name] = { 
+                    name: name, totalLate: 0, count: 0, statuses: {}, history: [],
+                    id: row[map.id] || '-', job: row[map.job] || '-', dept: deptFull, mainEntity: mainEntity,
+                    location: row[map.location] || '-', mobile: row[map.mobile] || '-', email: row[map.email] || '-',
+                    manager: managerName, managerEmail: row[map.managerEmail] || '-'
+                };
+            }
+            if(employees[name].manager === "غير محدد" && managerName !== "غير محدد") employees[name].manager = managerName;
+
+            let status = (row[map.status] || "غير محدد").trim();
+            status = status.replace(/[^\u0600-\u06FFa-zA-Z\s]/g, ''); 
+            employees[name].statuses[status] = (employees[name].statuses[status] || 0) + 1;
+            
+            uniqueEntities.add(mainEntity);
+            uniqueStatuses.add(status);
+            if (managerName !== "غير محدد") {
+                if (!globalManagersByEntity[mainEntity]) globalManagersByEntity[mainEntity] = new Set();
+                globalManagersByEntity[mainEntity].add(managerName);
+            }
+
+            let mins = parseTime(row[map.late]);
+            
+            let dateVal = row[map.date];
+            let dateStrDisplay = parseDateDisplay(dateVal); 
+            let dateStrISO = parseDateISO(dateVal); // YYYY-MM-DD
+            
+            let inT = extractTimeOnly(row[map.inTime]);
+            let outT = extractTimeOnly(row[map.outTime]);
+            let dayLoc = row[map.inLoc] || row[map.outLoc] || '-';
+            let isNegative = false;
+            let noteDetail = "";
+
+            if(mins > 0) {
+                employees[name].totalLate += mins;
+                employees[name].count++;
+                isNegative = true;
+                noteDetail = `تأخير لمدة ${formatTime(mins)}`;
+            } else if(negativeKeywords.some(k => status.includes(k))) {
+                employees[name].count++;
+                isNegative = true;
+                noteDetail = status;
+            }
+            employees[name].history.push({ 
+                date: dateStrDisplay,
+                dateISO: dateStrISO, 
+                status: status, 
+                detail: noteDetail || "---", 
+                inTime: inT, 
+                outTime: outT, 
+                dayLocation: dayLoc, 
+                isNegative: isNegative 
+            });
+        }
+
+        globalEmployees = employees; 
+        employeesArray = Object.values(employees).sort((a,b) => b.totalLate - a.totalLate || b.count - a.count);
+        populateFilters(uniqueEntities, uniqueStatuses);
+        applyFilters(); 
+    }
+
+    function populateFilters(entities, statuses) {
+        const selEntity = document.getElementById('selectEntity');
+        const selStatus = document.getElementById('selectStatus');
+        selEntity.innerHTML = '<option value="">كافة الجهات</option>';
+        selStatus.innerHTML = '<option value="">كافة الحالات</option>';
+        Array.from(entities).sort().forEach(e => selEntity.add(new Option(e, e)));
+        Array.from(statuses).sort().forEach(s => selStatus.add(new Option(s, s)));
+        updateManagersFromEntity();
+    }
+
+    function updateManagersFromEntity() {
+        const selectedEntity = document.getElementById('selectEntity').value;
+        const managerList = document.getElementById('managerList');
+        const inputManager = document.getElementById('inputManager');
+        managerList.innerHTML = '';
+        inputManager.value = ''; 
+        let managersToShow = new Set();
+        if (selectedEntity) {
+            if (globalManagersByEntity[selectedEntity]) managersToShow = globalManagersByEntity[selectedEntity];
+        } else {
+            Object.values(globalManagersByEntity).forEach(set => { set.forEach(m => managersToShow.add(m)); });
+        }
+        Array.from(managersToShow).sort().forEach(m => {
+            let opt = document.createElement('option');
+            opt.value = m;
+            managerList.appendChild(opt);
+        });
+        applyFilters();
+    }
+
+    function applyFilters() {
+        const query = searchInput.value.trim().toLowerCase();
+        const entFilter = document.getElementById('selectEntity').value;
+        const mgrQuery = document.getElementById('inputManager').value.trim().toLowerCase();
+        const stsFilter = document.getElementById('selectStatus').value;
+        
+        const dateFrom = document.getElementById('dateFrom').value;
+        const dateTo = document.getElementById('dateTo').value;
+
+        currentPage = 1;
+
+        filteredArray = employeesArray.filter(emp => {
+            let searchMatch = true;
+            if(query) {
+                const searchFields = [emp.name, emp.id.toString(), emp.email].join('||').toLowerCase();
+                if (query.includes('*')) {
+                    const pattern = query.split('*').map(s => escapeRegExp(s)).join('.*');
+                    searchMatch = new RegExp(pattern, 'i').test(searchFields);
+                } else {
+                    searchMatch = searchFields.includes(query);
+                }
+            }
+            let entMatch = !entFilter || emp.mainEntity === entFilter;
+            let mgrMatch = !mgrQuery || emp.manager.toLowerCase().includes(mgrQuery);
+            let stsMatch = !stsFilter || Object.keys(emp.statuses).some(s => s === stsFilter);
+            
+            // Fixed Date Logic (String Comparison)
+            let dateMatch = true;
+            if (dateFrom || dateTo) {
+                 dateMatch = emp.history.some(h => {
+                    if (!h.dateISO) return false;
+                    // String comparison works for ISO YYYY-MM-DD
+                    if (dateFrom && h.dateISO < dateFrom) return false;
+                    if (dateTo && h.dateISO > dateTo) return false;
+                    return true;
+                 });
+            }
+
+            return searchMatch && entMatch && mgrMatch && stsMatch && dateMatch;
+        });
+        recalcDashboard(filteredArray);
+        renderPagedTable();
+    }
+
+    function resetFilters() {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('selectEntity').value = '';
+        document.getElementById('inputManager').value = '';
+        document.getElementById('selectStatus').value = '';
+        document.getElementById('dateFrom').value = '';
+        document.getElementById('dateTo').value = '';
+        updateManagersFromEntity();
+    }
+
+    function recalcDashboard(dataList) {
+        document.getElementById('dashboard').style.display = 'block';
+        let totalLate = 0;
+        let absentCount = 0;
+        let globalStatuses = {};
+        let entityStats = {}; 
+        let dailyTrendStats = {}; 
+        // Manager Stats
+        let managerStats = {};
+        
+        const absentKeywords = ['غياب', 'منقطع'];
+        const dateFrom = document.getElementById('dateFrom').value;
+        const dateTo = document.getElementById('dateTo').value;
+
+        dataList.forEach(emp => {
+            // Filter history based on date range strictly using strings
+            let relevantHistory = emp.history;
+            if (dateFrom || dateTo) {
+                relevantHistory = emp.history.filter(h => {
+                    if (!h.dateISO) return false;
+                    if (dateFrom && h.dateISO < dateFrom) return false;
+                    if (dateTo && h.dateISO > dateTo) return false;
+                    return true;
+                });
+            }
+            
+            let empLate = 0;
+            let empNotes = 0;
+
+            relevantHistory.forEach(h => {
+                if (h.isNegative && h.detail.includes('تأخير')) {
+                     let match = h.detail.match(/(\d+):(\d+)/);
+                     if(match) empLate += parseInt(match[1])*60 + parseInt(match[2]);
+                     else empLate += 30; 
+                }
+                let st = h.status;
+                globalStatuses[st] = (globalStatuses[st] || 0) + 1;
+                if(absentKeywords.some(k => st.includes(k))) absentCount++;
+                
+                if(h.isNegative) dailyTrendStats[h.dateISO] = (dailyTrendStats[h.dateISO] || 0) + 1;
+                if(h.isNegative) empNotes++;
+            });
+            
+            totalLate += empLate;
+            if(!entityStats[emp.mainEntity]) entityStats[emp.mainEntity] = { count: 0, lateMins: 0 };
+            entityStats[emp.mainEntity].count += 1;
+            entityStats[emp.mainEntity].lateMins += empLate;
+
+            // Manager Stats
+            let mgr = emp.manager;
+            if(mgr !== 'غير محدد') {
+                if(!managerStats[mgr]) managerStats[mgr] = { name: mgr, empCount: 0, totalNotes: 0 };
+                managerStats[mgr].empCount++;
+                managerStats[mgr].totalNotes += empNotes;
+            }
+        });
+
+        document.getElementById('kpi-count').innerText = dataList.length;
+        document.getElementById('kpi-late').innerText = formatTime(totalLate);
+        document.getElementById('kpi-absent').innerText = absentCount;
+        let negStatuses = Object.entries(globalStatuses).filter(([k,v]) => ['منسحب', 'متأخر', 'مبكر', 'غياب'].some(kw => k.includes(kw)));
+        negStatuses.sort((a,b) => b[1] - a[1]);
+        document.getElementById('kpi-top-neg').innerText = negStatuses.length ? negStatuses[0][0] : "لا يوجد";
+        
+        const cleanEmps = dataList.filter(e => {
+             let rangeIssues = e.history.filter(h => {
+                if (!h.isNegative) return false;
+                if (dateFrom && h.dateISO < dateFrom) return false;
+                if (dateTo && h.dateISO > dateTo) return false;
+                return true;
+             });
+             return rangeIssues.length === 0;
+        }).length;
+
+        document.getElementById('kpi-compliance').innerText = dataList.length ? ((cleanEmps/dataList.length)*100).toFixed(1) + "%" : "0%";
+        currentGlobalStatuses = globalStatuses;
+        renderCharts(globalStatuses, dailyTrendStats, entityStats, managerStats);
+    }
+
+    function processChartData(statuses) {
+        let sorted = Object.entries(statuses).sort((a,b) => b[1] - a[1]);
+        let top6 = sorted.slice(0, 6);
+        let others = sorted.slice(6);
+        let otherCount = others.reduce((acc, curr) => acc + curr[1], 0);
+        let labels = top6.map(i => i[0]);
+        let data = top6.map(i => i[1]);
+        if(otherCount > 0) { labels.push('حالات أخرى'); data.push(otherCount); }
+        return { labels, data };
+    }
+
+    function generateLegend(data, colors, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        data.labels.forEach((label, i) => {
+            const val = data.data[i];
+            const color = colors[i];
+            const item = document.createElement('div');
+            item.className = 'legend-item';
+            item.innerHTML = `<span class="legend-color" style="background:${color}"></span><span class="legend-text">${label}: </span><span class="legend-value">${val}</span>`;
+            container.appendChild(item);
+        });
+    }
+
+    function renderCharts(statuses, trend, entityStats, managerStats) {
+        const ctx1 = document.getElementById('statusChart');
+        const ctx2 = document.getElementById('trendChart');
+        const ctx3 = document.getElementById('entityChart');
+        
+        // 1. Status Chart
+        const chartData = processChartData(statuses);
+        const pieColors = ['#10b981', '#ef4444', '#f59e0b', '#3b82f6', '#8b5cf6', '#ec4899', '#64748b'];
+        if(window.chart1) window.chart1.destroy();
+        window.chart1 = new Chart(ctx1, { 
+            type: 'doughnut', 
+            data: { labels: chartData.labels, datasets: [{ data: chartData.data, backgroundColor: pieColors, borderWidth: 0 }] }, 
+            options: { 
+                responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, 
+                plugins: { 
+                    legend: { display: false }, 
+                    datalabels: { display: false },
+                    tooltip: {
+                        bodyFont: { family: 'Janna' },
+                        titleFont: { family: 'Janna' }
+                    }
+                } 
+            } 
+        });
+        generateLegend(chartData, pieColors, 'statusChartLegend');
+
+        // 2. Trend Chart
+        if(window.chart2) window.chart2.destroy();
+        const trendDates = Object.keys(trend).sort();
+        window.chart2 = new Chart(ctx2, { 
+            type: 'line', 
+            data: { 
+                labels: trendDates, 
+                datasets: [{ 
+                    label: 'عدد الحالات اليومية', 
+                    data: trendDates.map(d => trend[d]), 
+                    borderColor: '#0e7490', 
+                    backgroundColor: 'rgba(14, 116, 144, 0.1)', 
+                    fill: true, 
+                    tension: 0.3 
+                }] 
+            }, 
+            options: { 
+                responsive: true, maintainAspectRatio: false, 
+                scales: { 
+                    y: { beginAtZero: true, ticks: { font: { family: 'Janna' } } },
+                    x: { ticks: { font: { family: 'Janna' } } }
+                }, 
+                plugins: { legend: { display: false }, datalabels: { display: false } } 
+            } 
+        });
+
+        // 3. Entity Chart
+        if(window.chart3) window.chart3.destroy();
+        const entLabels = Object.keys(entityStats);
+        const entCounts = entLabels.map(e => entityStats[e].count);
+        const bgColors = entLabels.map((_, i) => `hsl(${200 + (i * 30)}, 70%, 50%)`);
+        window.chart3 = new Chart(ctx3, { 
+            type: 'bar', 
+            data: { 
+                labels: entLabels, 
+                datasets: [{ 
+                    label: 'عدد الموظفين', 
+                    data: entCounts, 
+                    backgroundColor: bgColors, 
+                    borderRadius: 5, 
+                    barThickness: 20 
+                }] 
+            }, 
+            options: { 
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false, 
+                scales: { 
+                    x: { beginAtZero: true, ticks: { font: { family: 'Janna' } } },
+                    y: { ticks: { font: { family: 'Janna' } } }
+                }, 
+                plugins: { 
+                    legend: { display: false }, 
+                    datalabels: { anchor: 'end', align: 'end', color: '#333', font: { weight: 'bold', family: 'Janna' } } 
+                } 
+            } 
+        });
+
+        // 4. Manager Charts (Fixed Colors)
+        renderManagerCharts(managerStats);
+    }
+
+    function renderManagerCharts(stats) {
+        const ctxBest = document.getElementById('managerBestChart');
+        const ctxWorst = document.getElementById('managerWorstChart');
+        
+        let mgrArray = Object.values(stats);
+        mgrArray.forEach(m => m.avgNotes = m.empCount > 0 ? (m.totalNotes / m.empCount) : 0);
+        
+        let bestMgrs = [...mgrArray].sort((a,b) => a.avgNotes - b.avgNotes).slice(0, 5);
+        let worstMgrs = [...mgrArray].sort((a,b) => b.avgNotes - a.avgNotes).slice(0, 5);
+
+        if(window.chartBest) window.chartBest.destroy();
+        window.chartBest = new Chart(ctxBest, {
+            type: 'bar',
+            data: {
+                labels: bestMgrs.map(m => m.name),
+                datasets: [{
+                    label: 'متوسط الملاحظات/موظف',
+                    data: bestMgrs.map(m => m.avgNotes.toFixed(2)),
+                    backgroundColor: '#10b981', // أخضر ثابت
+                    barThickness: 20
+                }]
+            },
+            options: { 
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false, 
+                plugins: { legend: { display: false }, tooltip: { bodyFont: {family:'Janna'} } },
+                scales: { y: { ticks: { font: {family:'Janna'} } } }
+            }
+        });
+
+        if(window.chartWorst) window.chartWorst.destroy();
+        window.chartWorst = new Chart(ctxWorst, {
+            type: 'bar',
+            data: {
+                labels: worstMgrs.map(m => m.name),
+                datasets: [{
+                    label: 'متوسط الملاحظات/موظف',
+                    data: worstMgrs.map(m => m.avgNotes.toFixed(2)),
+                    backgroundColor: '#ef4444', // أحمر ثابت
+                    barThickness: 20
+                }]
+            },
+            options: { 
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false, 
+                plugins: { legend: { display: false }, tooltip: { bodyFont: {family:'Janna'} } },
+                scales: { y: { ticks: { font: {family:'Janna'} } } }
+            }
+        });
+    }
+
+    function openChartModal() {
+        document.getElementById('chartModal').style.display = 'block';
+        const ctxFull = document.getElementById('fullStatusChart');
+        if(window.fullChart) window.fullChart.destroy();
+        const colors = [ '#10b981', '#ef4444', '#f59e0b', '#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16', '#f97316', '#6366f1', '#14b8a6', '#d946ef', '#f43f5e', '#64748b', '#a855f7', '#22c55e', '#eab308', '#0ea5e9' ];
+        window.fullChart = new Chart(ctxFull, { type: 'pie', data: { labels: Object.keys(currentGlobalStatuses), datasets: [{ data: Object.values(currentGlobalStatuses), backgroundColor: colors }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: {font: {family:'Janna', size: 14}} }, datalabels: { color: '#fff', font: { weight: 'bold' } } } } });
+    }
+
+    function renderPagedTable() {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const pageData = filteredArray.slice(start, end);
+        pageData.forEach((e, idx) => {
+            let topStatus = Object.keys(e.statuses).reduce((a, b) => e.statuses[a] > e.statuses[b] ? a : b);
+            let badgeClass = getBadgeClass(topStatus);
+            let globalIdx = start + idx + 1;
+            let tr = document.createElement('tr');
+            tr.className = 'clickable-row';
+            tr.onclick = () => showEmployeeDetails(e.name);
+            tr.innerHTML = `<td>${globalIdx}</td><td class="clickable-name">${e.name}</td><td style="font-size:0.85em; color:#64748b">${e.mainEntity}</td><td style="direction:ltr; text-align:right; font-weight:bold; color:${e.totalLate > 0 ? 'var(--danger)' : '#333'}">${e.totalLate > 0 ? formatTime(e.totalLate) : '-'}</td><td>${e.count > 0 ? e.count + ' ملاحظات' : '<span style="color:var(--success)">منتظم</span>'}</td><td><span class="status-badge ${badgeClass}">${topStatus}</span></td>`;
+            tbody.appendChild(tr);
+        });
+        const totalPages = Math.ceil(filteredArray.length / rowsPerPage) || 1;
+        document.getElementById('pageInfo').innerText = `صفحة ${currentPage} من ${totalPages}`;
+        document.getElementById('btnPrev').disabled = currentPage === 1;
+        document.getElementById('btnNext').disabled = currentPage === totalPages;
+    }
+
+    function changePage(delta) {
+        const totalPages = Math.ceil(filteredArray.length / rowsPerPage) || 1;
+        const newPage = currentPage + delta;
+        if(newPage >= 1 && newPage <= totalPages) { currentPage = newPage; renderPagedTable(); }
+    }
+    function escapeRegExp(string) { return string.replace(/[.+?^${}()|[\]\\]/g, '\\$&'); }
+    function getBadgeClass(status) { if(status.includes('غياب')) return 'st-dark'; if(status.includes('منسحب') || status.includes('متأخر')) return 'st-danger'; if(status.includes('مبكر')) return 'st-warning'; if(status.includes('على رأس العمل')) return 'st-success'; return 'st-neutral'; }
+    function parseTime(val) { if(!val) return 0; if(typeof val === 'number') return Math.round(val * 24 * 60); if(typeof val === 'string') { const p = val.split(':'); if(p.length >= 2) return (parseInt(p[0])*60) + parseInt(p[1]); } return 0; }
+    function extractTimeOnly(val) { if (!val) return '-'; if (typeof val === 'number') { let fractional = val % 1; let totalSeconds = Math.round(fractional * 24 * 60 * 60); let h = Math.floor(totalSeconds / 3600); let m = Math.floor((totalSeconds % 3600) / 60); let s = totalSeconds % 60; return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`; } if (typeof val === 'string') { val = val.trim(); let timeMatch = val.match(/(\d{1,2}:\d{2}(?::\d{2})?)(\s*[AP]M)?/i); if (timeMatch) return timeMatch[0]; if (val.includes(' ')) { let parts = val.split(' '); if (parts.length > 1 && parts[1].includes(':')) return parts[1]; } } return val; }
+    function formatTime(mins) { const h = Math.floor(mins/60); const m = mins%60; return `${h}:${m<10?'0'+m:m}`; }
+    function formatTimeHM(mins) { const h = Math.floor(mins/60); const m = mins%60; return `${h < 10 ? '0'+h : h}:${m < 10 ? '0'+m : m}`; }
+    
+    function parseDateDisplay(val) { 
+        if(!val) return '-'; 
+        if(typeof val === 'number') { 
+             const d = new Date(Math.round((val - 25569)*864e5)); 
+             d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+             const day = String(d.getDate()).padStart(2, '0');
+             const month = String(d.getMonth() + 1).padStart(2, '0');
+             const year = d.getFullYear();
+             return `${day}/${month}/${year}`;
+        } 
+        if(typeof val === 'string' && val.match(/^\d{4}-\d{2}-\d{2}/)) {
+            const parts = val.split(' ')[0].split('-');
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+        return val.toString().split(' ')[0]; 
+    }
+
+    function parseDateISO(val) {
+        if(!val) return null;
+        if(typeof val === 'number') {
+            const d = new Date(Math.round((val - 25569)*864e5));
+            d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+            return d.toISOString().split('T')[0];
+        }
+        if(typeof val === 'string') {
+            val = val.trim();
+            if(val.match(/^\d{4}-\d{2}-\d{2}/)) return val.split(' ')[0];
+            if(val.match(/^\d{1,2}\/\d{1,2}\/\d{4}/)) {
+                const parts = val.split('/');
+                return `${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`;
+            }
+        }
+        return null;
+    }
+
+    // exportSummaryExcel Updated with Styling (RTL + Contact)
+    function exportSummaryExcel() {
+        if(!filteredArray.length) return;
+        const data = filteredArray.map(e => {
+            let topStatus = Object.keys(e.statuses).reduce((a, b) => e.statuses[a] > e.statuses[b] ? a : b);
+            return [
+                e.id, e.name, 
+                e.mobile, e.email, // بعد الاسم مباشرة
+                e.mainEntity, e.dept, e.job, 
+                e.manager, e.managerEmail, 
+                formatTimeHM(e.totalLate), e.count, topStatus
+            ];
+        });
+        const header = ["الرقم الوظيفي", "الاسم", "جوال الموظف", "ايميل الموظف", "الجهة الرئيسية", "الإدارة الفرعية", "المنصب", "المدير المباشر", "ايميل المدير", "إجمالي التأخير (ساعات)", "عدد المخالفات", "الحالة الأبرز"];
+        const ws = XLSX.utils.aoa_to_sheet([header, ...data]);
+        
+        ws['!cols'] = [{wch:10}, {wch:25}, {wch:12}, {wch:20}, {wch:20}, {wch:35}, {wch:20}, {wch:20}, {wch:20}, {wch:12}, {wch:10}, {wch:20}];
+        if(!ws['!views']) ws['!views'] = [];
+        ws['!views'].push({ rightToLeft: true });
+
+        applyExcelStyles(ws);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "ملخص الانضباط");
+        XLSX.writeFile(wb, "تقرير_ملخص_الانضباط.xlsx");
+    }
+
+    // exportDetailedExcel Updated with Styling
+    function exportDetailedExcel() {
+        if(!filteredArray.length) return;
+        const rows = [];
+        filteredArray.forEach(e => {
+            e.history.forEach(h => {
+                rows.push([
+                    h.date, e.id, e.name, e.mobile, e.email, 
+                    e.mainEntity, h.status, h.detail, 
+                    e.manager, e.managerEmail
+                ]);
+            });
+        });
+        const header = ["التاريخ", "رقم الموظف", "اسم الموظف", "الجوال", "الايميل", "الجهة", "الحالة", "التفاصيل", "المدير المباشر", "ايميل المدير"];
+        const ws = XLSX.utils.aoa_to_sheet([header, ...rows]);
+        
+        ws['!cols'] = [{wch:12}, {wch:10}, {wch:20}, {wch:12}, {wch:20}, {wch:20}, {wch:15}, {wch:25}, {wch:20}, {wch:20}];
+        if(!ws['!views']) ws['!views'] = [];
+        ws['!views'].push({ rightToLeft: true });
+
+        applyExcelStyles(ws);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "سجل المخالفات");
+        XLSX.writeFile(wb, "تقرير_المخالفات_التفصيلي.xlsx");
+    }
+    
+    function applyExcelStyles(ws) {
+        const range = XLSX.utils.decode_range(ws['!ref']);
+        for (let R = range.s.r; R <= range.e.r; ++R) {
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+                const cellAddr = XLSX.utils.encode_cell({ r: R, c: C });
+                if (!ws[cellAddr]) continue;
+                let cellStyle = { font: { name: "Calibri", sz: 11 }, alignment: { horizontal: "center", vertical: "center" }, border: { top: {style:"thin", color: {rgb:"CCCCCC"}}, bottom: {style:"thin", color: {rgb:"CCCCCC"}}, left: {style:"thin", color: {rgb:"CCCCCC"}}, right: {style:"thin", color: {rgb:"CCCCCC"}} } };
+                if (R === 0) {
+                    cellStyle.font = { name: "Calibri", sz: 12, bold: true, color: { rgb: "FFFFFF" } };
+                    cellStyle.fill = { fgColor: { rgb: "0E7490" } };
+                } else {
+                    const val = ws[cellAddr].v;
+                    if (typeof val === 'string') {
+                        if(val.includes('تأخير') || val.includes('منسحب') || val.includes('غياب')) { cellStyle.fill = { fgColor: { rgb: "FEE2E2" } }; cellStyle.font.color = { rgb: "991B1B" }; }
+                        else if(val.includes('منتظم') || val.includes('عمل')) { cellStyle.fill = { fgColor: { rgb: "DCFCE7" } }; cellStyle.font.color = { rgb: "166534" }; }
+                    }
+                }
+                ws[cellAddr].s = cellStyle;
+            }
+        }
+    }
+    
+    // exportSingleEmployeeExcel Updated
+    function exportSingleEmployeeExcel() {
+        if (!currentEmployeeId) return;
+        const e = globalEmployees[currentEmployeeId];
+        if(!e) return;
+        
+        const cardDateFrom = document.getElementById('cardDateFrom').value;
+        const cardDateTo = document.getElementById('cardDateTo').value;
+        const showNotesOnly = document.getElementById('showNotesOnly').checked;
+        const dFrom = cardDateFrom ? toMidnight(new Date(cardDateFrom)) : null;
+        const dTo = cardDateTo ? toMidnight(new Date(cardDateTo)) : null;
+
+        let topStatus = Object.keys(e.statuses).reduce((a, b) => e.statuses[a] > e.statuses[b] ? a : b);
+        const summaryData = [
+            ["بطاقة الموظف"],
+            ["الاسم", e.name], ["الرقم الوظيفي", e.id], ["الوظيفة", e.job],
+            ["الجهة الرئيسية", e.mainEntity], ["الإدارة الفرعية", e.dept], ["المدير المباشر", e.manager],
+            ["رقم الجوال", e.mobile], ["البريد الإلكتروني", e.email], ["موقع البصمة", e.location],
+            [],
+            ["إحصائيات الموظف"],
+            ["ساعات التأخير", formatTimeHM(e.totalLate)], ["عدد المخالفات", e.count], ["الحالة الأبرز", topStatus],
+            [],
+            ["سجل الحضور اليومي"],
+            ["التاريخ", "الحالة", "موقع البصمة", "وقت الدخول", "وقت الخروج", "التفاصيل"]
+        ];
+
+        e.history.forEach(h => {
+            if (showNotesOnly && !h.isNegative) return;
+            if (dFrom || dTo) {
+                 if (!h.dateISO) return; // Skip if date is invalid
+                 if (dFrom && h.dateISO < document.getElementById('cardDateFrom').value) return;
+                 if (dTo && h.dateISO > document.getElementById('cardDateTo').value) return;
+            }
+            summaryData.push([h.date, h.status, h.dayLocation, h.inTime, h.outTime, h.detail]);
+        });
+
+        const ws = XLSX.utils.aoa_to_sheet(summaryData);
+        if(!ws['!views']) ws['!views'] = [];
+        ws['!views'].push({ rightToLeft: true });
+
+        const range = XLSX.utils.decode_range(ws['!ref']);
+        for (let R = range.s.r; R <= range.e.r; ++R) {
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+                const cellAddr = XLSX.utils.encode_cell({ r: R, c: C });
+                if (!ws[cellAddr]) continue;
+                let s = { font: { name: "Calibri", sz: 11 }, alignment: { horizontal: "left" } };
+                const val = ws[cellAddr].v;
+
+                if (["بطاقة الموظف", "إحصائيات الموظف", "سجل الحضور اليومي"].includes(val)) {
+                    s.font = { name: "Calibri", sz: 14, bold: true, color: { rgb: "0E7490" } };
+                    s.alignment = { horizontal: "center" };
+                } 
+                else if (val === "التاريخ" && R > 15) {
+                    for(let c2=0; c2<=5; c2++) {
+                        const addr2 = XLSX.utils.encode_cell({ r: R, c: c2 });
+                        if(ws[addr2]) {
+                            ws[addr2].s = { font: { bold: true, color: { rgb: "FFFFFF" } }, fill: { fgColor: { rgb: "059669" } }, alignment: { horizontal: "center" } };
+                        }
+                    }
+                }
+                else if (R > 18) { 
+                     s.alignment = { horizontal: "center" };
+                     s.border = { top: {style:"thin"}, bottom: {style:"thin"} };
+                     if (C === 1) { 
+                         if(val.includes('تأخير') || val.includes('منسحب')) { s.fill = { fgColor: { rgb: "FEE2E2" } }; s.font.color = { rgb: "991B1B" }; }
+                         else if(val.includes('منتظم')) { s.fill = { fgColor: { rgb: "DCFCE7" } }; s.font.color = { rgb: "166534" }; }
+                     }
+                }
+                else if (C === 0 && R < 18) { s.font.bold = true; } 
+                // تنسيق اسم الموظف Bold
+                if (val === e.name && R === 1 && C === 1) { s.font = { name: "Calibri", sz: 12, bold: true }; }
+
+                if(!ws[cellAddr].s) ws[cellAddr].s = s;
+            }
+        }
+        ws['!cols'] = [{wch:20}, {wch:30}, {wch:20}, {wch:15}, {wch:15}, {wch:30}];
+        
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, `سجل_${e.name}`);
+        XLSX.writeFile(wb, `سجل_${e.name}.xlsx`);
+    }
+
+    function toggleHistorySort() {
+        if(!currentEmployeeId) return;
+        isHistoryAscending = !isHistoryAscending;
+        const sortIcon = document.getElementById('sortIcon');
+        if(sortIcon) sortIcon.innerText = isHistoryAscending ? '↑' : '↓';
+        applyCardFilters();
+    }
+
+    function showEmployeeDetails(name) {
+        document.body.classList.add('modal-open');
+        const emp = globalEmployees[name];
+        if(!emp) return;
+        currentEmployeeId = name; 
+        document.getElementById('modalTitle').innerText = emp.name;
+        document.getElementById('prof-name').innerText = emp.name; 
+        document.getElementById('prof-id').innerText = emp.id;
+        document.getElementById('prof-job').innerText = emp.job;
+        document.getElementById('prof-dept').innerText = emp.dept + " (" + emp.mainEntity + ")";
+        document.getElementById('prof-manager').innerText = emp.manager;
+        document.getElementById('prof-mobile').innerText = emp.mobile;
+        document.getElementById('prof-email').innerText = emp.email;
+        document.getElementById('prof-manager-email').innerText = emp.managerEmail;
+        document.getElementById('prof-location').innerText = emp.location;
+        
+        let absentDays = 0; let noSign = 0;
+        const absentKeywords = ['غياب', 'منقطع'];
+        const noSignKeywords = ['منسحب', 'خروج مبكر'];
+        emp.history.forEach(h => {
+            if (absentKeywords.some(k => h.status.includes(k))) absentDays++;
+            if (noSignKeywords.some(k => h.status.includes(k))) noSign++;
+        });
+        const totalDays = emp.history.length;
+        const cleanDays = totalDays - emp.count;
+        const compliance = totalDays > 0 ? ((cleanDays / totalDays) * 100).toFixed(1) : 0;
+        document.getElementById('stat-absent').innerText = absentDays;
+        document.getElementById('stat-late').innerText = formatTimeHM(emp.totalLate);
+        document.getElementById('stat-nosign').innerText = noSign;
+        document.getElementById('stat-compliance').innerText = compliance + "%";
+
+        const check = document.getElementById('showNotesOnly');
+        check.checked = false;
+        document.getElementById('cardDateFrom').value = '';
+        document.getElementById('cardDateTo').value = '';
+        document.body.removeAttribute('data-print-notes-only'); 
+        
+        isHistoryAscending = true;
+        const sortIcon = document.getElementById('sortIcon');
+        if(sortIcon) sortIcon.innerText = '↕️';
+
+        applyCardFilters(); 
+        document.getElementById('employeeModal').style.display = 'block';
+    }
+    
+    function applyCardFilters() {
+        if(!currentEmployeeId) return;
+        const emp = globalEmployees[currentEmployeeId];
+        const notesOnly = document.getElementById('showNotesOnly').checked;
+        const dFromVal = document.getElementById('cardDateFrom').value;
+        const dToVal = document.getElementById('cardDateTo').value;
+        const dFrom = dFromVal ? toMidnight(new Date(dFromVal)) : null;
+        const dTo = dToVal ? toMidnight(new Date(dToVal)) : null;
+        
+        if(notesOnly) document.body.setAttribute('data-print-notes-only', 'true');
+        else document.body.removeAttribute('data-print-notes-only');
+        
+        let filteredHistory = emp.history.filter(h => {
+            if (notesOnly && !h.isNegative) return false;
+            // Date Filter Logic
+            if (dFrom || dTo) {
+                if (!h.dateISO) return false;
+                const hDate = toMidnight(new Date(h.dateISO));
+                if (dFrom && hDate < dFrom) return false;
+                if (dTo && hDate > dTo) return false;
+            }
+            return true;
+        });
+
+        renderHistoryList(filteredHistory);
+    }
+    
+    function clearCardFilters() {
+        document.getElementById('cardDateFrom').value = '';
+        document.getElementById('cardDateTo').value = '';
+        document.getElementById('showNotesOnly').checked = false;
+        applyCardFilters();
+    }
+
+    function renderHistoryList(historyList) {
+        const tbody = document.getElementById('historyTableBody');
+        tbody.innerHTML = '';
+        if(historyList.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:20px; color:var(--success)">✨ لا توجد بيانات للعرض</td></tr>';
+        } else {
+            historyList.sort((a,b) => {
+                if(a.dateISO && b.dateISO) {
+                    return isHistoryAscending ? a.dateISO.localeCompare(b.dateISO) : b.dateISO.localeCompare(a.dateISO);
+                }
+                return isHistoryAscending ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date);
+            });
+
+            historyList.forEach((h, index) => {
+                let color = h.isNegative ? (h.detail.includes('تأخير') ? 'var(--danger)' : '#d97706') : 'var(--success)';
+                let rowId = `detail-${index}`;
+                let rowClass = h.isNegative ? 'history-row-negative' : 'history-row-clean'; 
+                
+                let mainRow = `<tr class="${rowClass}"><td class="date-toggle" onclick="toggleDetails('${rowId}')">📅 ${h.date}</td><td><span class="status-badge ${getBadgeClass(h.status)}">${h.status}</span></td><td>${h.dayLocation}</td><td style="color:${color}; font-weight:bold">${h.detail}</td></tr>`;
+                let hiddenRow = `<tr id="${rowId}" class="time-details-row ${rowClass}"><td colspan="4"><div style="display:flex; gap:20px;"><span>🕒 دخول: <b>${h.inTime || '-'}</b></span><span>🕒 خروج: <b>${h.outTime || '-'}</b></span></div></td></tr>`;
+                tbody.innerHTML += mainRow + hiddenRow;
+            });
+        }
+    }
+
+    function toggleDetails(id) {
+        const row = document.getElementById(id);
+        row.style.display = (row.style.display === 'table-row') ? 'none' : 'table-row';
+    }
+    function closeModal(id) {
+        document.body.classList.remove('modal-open');
+        document.getElementById(id).style.display = 'none';
+        if(id === 'employeeModal') document.body.removeAttribute('data-print-notes-only'); 
+        if(id === 'chartModal') document.body.classList.remove('chart-modal-print'); // remove print class
+    }
+    window.onclick = function(event) { 
+        if (event.target == document.getElementById('employeeModal')) closeModal('employeeModal');
+        if (event.target == document.getElementById('chartModal')) closeModal('chartModal');
+    }
+</script>
+
+
+    </div>
+
+    <script>
+        function startLoading() {
+            const loginScreen = document.getElementById('loginScreen');
+            const loadingScreen = document.getElementById('loadingScreen');
+
+            loginScreen.classList.add('login-hidden');
+            loadingScreen.classList.remove('loading-hidden');
+
+            const progressBar = document.getElementById('progressBar');
+            const loadingPercentage = document.getElementById('loadingPercentage');
+
+            let progress = 0;
+            const interval = setInterval(function() {
+                progress += 10;
+                progressBar.style.width = progress + '%';
+                loadingPercentage.textContent = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(function() {
+                        loadingScreen.classList.add('loading-hidden');
+                        document.getElementById('mainContent').classList.add('content-visible');
+                    }, 500);
+                }
+            }, 300);
+        }
+    </script>
+</body>
+</html>
