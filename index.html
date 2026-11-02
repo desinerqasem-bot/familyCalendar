@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="admin-pin" content="1448">
-    <title>روزنامة فعاليات مجلس عائلة الدريع بالأحساء 1448 هـ</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <style>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<meta content="1448" name="admin-pin"/>
+<title>روزنامة فعاليات مجلس عائلة الدريع بالأحساء 1448 هـ</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
         :root { --gold: #c9a24b; --gold-soft: rgba(201, 162, 75, 0.35); }
         html { -webkit-text-size-adjust: 100%; }
 
@@ -89,144 +89,159 @@
             .title-gold { -webkit-text-fill-color: #14532d; color: #14532d !important; }
         }
     </style>
-</head>
-<body class="min-h-screen py-3 px-3 sm:px-5 lg:px-8 text-gray-800">
-
-    <div class="immersive-container w-full max-w-5xl rounded-[32px] p-4 md:p-10 my-3 mx-auto relative">
-
-        <div class="text-center pb-5 mb-7">
-            <div class="inline-flex items-center gap-2 bg-emerald-950/80 border border-yellow-700/50 text-yellow-100 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-md mb-4">
-                <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Tajawal,Arial,sans-serif;padding:14px;color:#17251e;line-height:1.7}
+.immersive-container{width:100%;max-width:1024px;margin:14px auto;padding:32px;border-radius:28px}
+h1{font-size:clamp(24px,5vw,38px);line-height:1.5;text-align:center}h3{line-height:1.6}
+#season-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.spatial-bento-card{padding:24px;border-radius:24px;min-width:0;display:flex;flex-direction:column;justify-content:space-between}
+.spatial-bento-card h3{font-size:22px;margin:14px 0 8px}.spatial-bento-card p{font-size:17px;line-height:1.9}
+#subscription-card{grid-column:1/-1;width:100%;max-width:740px;margin:auto;border-color:#c9a24b;background:#fffaf0}
+#subscription-card h3{font-size:clamp(24px,5vw,32px)}
+#subscription-card [id$="-hijri"],#subscription-card [id$="-greg"]{font-size:16px;font-weight:700}
+#subscription-card .mt-5>div:first-child{display:flex;justify-content:space-between;gap:14px;padding:14px;background:#fff;border-radius:14px;margin-top:20px}
+#subscription-card .mt-5>div:first-child span{display:block}
+#timer-deadline{margin-top:16px;padding:18px 8px!important;background:#123e2d!important;color:#fff2cd!important;border-radius:18px;font-size:18px!important;text-align:center}
+.count-units{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;direction:rtl;margin-top:10px}
+.count-unit strong{display:block;font-size:clamp(26px,7vw,42px);line-height:1.3;font-variant-numeric:tabular-nums}.count-unit span{font-size:14px}.count-unit{padding:10px 2px;background:#ffffff12;border-radius:12px}
+#season-intro{grid-column:1/-1;text-align:center;color:#f4eedb;padding:12px 0 0}#season-intro h2{font-size:24px;margin:8px 0}#season-intro p{font-size:17px;max-width:650px;margin:auto;line-height:1.9}#season-intro>span{color:#e1bf6c;font-size:15px}
+.coming-label{display:none;color:#796021;font-weight:700}
+body[data-season-mode="teaser"] [data-season-card]{cursor:default;min-height:0!important;max-width:none!important;grid-column:auto!important;width:100%!important;margin:0!important;padding:22px}
+body[data-season-mode="teaser"] [data-season-card]>div:first-child>div:first-child,
+body[data-season-mode="teaser"] [data-season-card] [id$="-desc"],body[data-season-mode="teaser"] [data-season-card]>div.mt-5{display:none!important}
+body[data-season-mode="teaser"] .coming-label{display:block;font-size:15px;margin:8px 0 0}
+body[data-season-mode="full"] #season-intro{display:none}
+.admin-input{font-size:16px!important;min-height:48px}.admin-label{font-size:15px!important}#adminPanel button{min-height:44px}
+#detailsModal.hidden{display:none}#detailsModal:not(.hidden){display:flex;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;background:#05190fbb;padding:16px}
+.premium-modal{padding:26px;border-radius:24px;max-height:85dvh;overflow:auto;width:min(100%,680px)}
+#t-footer-note{font-size:15px;line-height:1.8}
+@media(max-width:600px){body{padding:10px!important}.immersive-container{padding:18px!important;margin:0 auto!important;border-radius:24px!important}#season-grid{grid-template-columns:1fr;gap:14px}.spatial-bento-card{padding:20px!important}.spatial-bento-card h3{font-size:22px}#subscription-card .mt-5>div:first-child{flex-wrap:wrap}#season-intro h2{font-size:22px}#season-intro p{font-size:16px}#subscription-card [id$="-hijri"],#subscription-card [id$="-greg"]{font-size:16px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.spatial-bento-card{transform:none!important}}
+</style></head>
+<body class="min-h-screen py-3 px-3 sm:px-5 lg:px-8 text-gray-800" data-season-mode="teaser">
+<div class="immersive-container w-full max-w-5xl rounded-[32px] p-4 md:p-10 my-3 mx-auto relative">
+<div class="text-center pb-5 mb-7">
+<div class="inline-flex items-center gap-2 bg-emerald-950/80 border border-yellow-700/50 text-yellow-100 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-md mb-4">
+<span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
                 الدورة الحالية الإدارية: سنتين كاملتين
             </div>
-            <h1 class="text-xl sm:text-2xl md:text-4xl font-black tracking-tight flex items-center justify-center gap-2.5 mt-1 flex-wrap title-gold leading-snug">
-                <i class="fa-solid fa-palm-tree" style="color: #34d399;"></i>
+<h1 class="text-xl sm:text-2xl md:text-4xl font-black tracking-tight flex items-center justify-center gap-2.5 mt-1 flex-wrap title-gold leading-snug">
+<i class="fa-solid fa-palm-tree" style="color: #34d399;"></i>
                 روزنامة فعاليات مجلس عائلة الدريع بالأحساء
             </h1>
-            <p class="text-emerald-100/95 text-xs md:text-base mt-2 font-bold">المستهدفات والمواعيد الزمنية لعام 1448 هـ (اضغط على البطاقة للتفاصيل)</p>
-            <hr class="divider-gold mt-5">
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-7">
-
-            <div class="spatial-bento-card spatial-bento-card-critical rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" onclick="openModal('deadline')">
-                <div>
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-600 shadow-sm">
-                            <i class="fa-solid fa-triangle-exclamation text-lg md:text-xl"></i>
-                        </div>
-                        <span id="t-deadline-badge" class="text-xs md:text-[13px] font-black text-red-700 bg-red-100/60 border border-red-200/60 px-3 py-1 rounded-full">تنظيم مالي</span>
-                    </div>
-                    <h3 id="t-deadline-title" class="text-xl md:text-2xl font-bold text-gray-900 mb-2">📌 الموعد النهائي للسداد</h3>
-                    <p id="t-deadline-desc" class="text-gray-600 text-sm md:text-base leading-relaxed">مهلة سداد الاشتراك السنوي — به تُموَّل جميع ملتقيات العام وضيافتها.</p>
-                </div>
-                <div class="mt-5">
-                    <div class="flex justify-between items-center bg-white/75 p-3 rounded-xl border border-yellow-900/10 text-sm mb-2 font-medium">
-                        <div class="text-start"><span class="text-gray-500 block text-[11px]">الهجري</span><span id="t-deadline-hijri" class="text-gray-900 font-bold">30 جمادى الأولى 1448</span></div>
-                        <div class="text-end"><span class="text-gray-500 block text-[11px]">الميلادي</span><span id="t-deadline-greg" class="text-gray-900 font-bold">09 نوفمبر 2026</span></div>
-                    </div>
-                    <div class="text-xs md:text-sm font-black text-center text-red-600 bg-white/90 py-2.5 rounded-xl border border-red-200/50 shadow-inner" id="timer-deadline" data-target="2026-11-09T23:59">جاري الحساب...</div>
-                </div>
-            </div>
-
-            <div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" onclick="openModal('winter')">
-                <div>
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-800 shadow-sm">
-                            <i class="fa-solid fa-snowflake text-lg md:text-xl"></i>
-                        </div>
-                        <span id="t-winter-badge" class="text-xs md:text-[13px] font-black text-emerald-800 bg-emerald-100/60 border border-emerald-200/60 px-3 py-1 rounded-full">الملتقى الأول</span>
-                    </div>
-                    <h3 id="t-winter-title" class="text-xl md:text-2xl font-bold text-gray-900 mb-2">❄️ الحفل الشتوي السنوي</h3>
-                    <p id="t-winter-desc" class="text-gray-600 text-sm md:text-base leading-relaxed">افتتاح موسم الملتقيات بلقاء عائلي ومخيم بري مميز، وتكريم المتفوقين والمتفوقات.</p>
-                </div>
-                <div class="mt-5">
-                    <div class="flex justify-between items-center bg-white/75 p-3 rounded-xl border border-yellow-900/10 text-sm mb-2 font-medium">
-                        <div class="text-start"><span class="text-gray-500 block text-[11px]">الهجري</span><span id="t-winter-hijri" class="text-gray-900 font-bold">09 رجب 1448</span></div>
-                        <div class="text-end"><span class="text-gray-500 block text-[11px]">الميلادي</span><span id="t-winter-greg" class="text-emerald-800 font-bold">18 ديسمبر 2026</span></div>
-                    </div>
-                    <div class="text-xs md:text-sm font-black text-center text-emerald-800 bg-white/90 py-2.5 rounded-xl border border-emerald-200/40 shadow-inner" id="timer-winter" data-target="2026-12-18T16:00">جاري الحساب...</div>
-                </div>
-            </div>
-
-            <div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" onclick="openModal('ramadan')">
-                <div>
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-800 shadow-sm">
-                            <i class="fa-solid fa-mosque text-lg md:text-xl"></i>
-                        </div>
-                        <span id="t-ramadan-badge" class="text-xs md:text-[13px] font-black text-emerald-800 bg-emerald-100/60 border border-emerald-200/60 px-3 py-1 rounded-full">روحانيات</span>
-                    </div>
-                    <h3 id="t-ramadan-title" class="text-xl md:text-2xl font-bold text-gray-900 mb-2">🌙 الإفطار الرمضاني التشاركي</h3>
-                    <p id="t-ramadan-desc" class="text-gray-600 text-sm md:text-base leading-relaxed">إفطار تشاركي وليلة إيمانية: كل عضو يصطحب طبقاً، ولمّتنا على مائدة واحدة.</p>
-                </div>
-                <div class="mt-5">
-                    <div class="flex justify-between items-center bg-white/75 p-3 rounded-xl border border-yellow-900/10 text-sm mb-2 font-medium">
-                        <div class="text-start"><span class="text-gray-500 block text-[11px]">الهجري</span><span id="t-ramadan-hijri" class="text-gray-900 font-bold">05 رمضان 1448</span></div>
-                        <div class="text-end"><span class="text-gray-500 block text-[11px]">الميلادي المتوقع</span><span id="t-ramadan-greg" class="text-emerald-800 font-bold">12 فبراير 2027</span></div>
-                    </div>
-                    <div class="text-xs md:text-sm font-black text-center text-emerald-800 bg-white/90 py-2.5 rounded-xl border border-emerald-200/40 shadow-inner" id="timer-ramadan" data-target="2027-02-12T17:30">جاري الحساب...</div>
-                </div>
-            </div>
-
-            <div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" onclick="openModal('eid-fitr')">
-                <div>
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-700 shadow-sm">
-                            <i class="fa-solid fa-wand-magic-sparkles text-lg md:text-xl"></i>
-                        </div>
-                        <span id="t-eid-fitr-badge" class="text-xs md:text-[13px] font-black text-emerald-800 bg-emerald-100/60 border border-emerald-200/60 px-3 py-1 rounded-full">بهجة العيد</span>
-                    </div>
-                    <h3 id="t-eid-fitr-title" class="text-xl md:text-2xl font-bold text-gray-900 mb-2">🎈 ملتقى عيد الفطر السعيد</h3>
-                    <p id="t-eid-fitr-desc" class="text-gray-600 text-sm md:text-base leading-relaxed">المعايدة السنوية الكبرى وتوزيع هدايا العيد على الأطفال والاحتفاء بصلات الرحم.</p>
-                </div>
-                <div class="mt-5">
-                    <div class="flex justify-between items-center bg-white/75 p-3 rounded-xl border border-yellow-900/10 text-sm mb-2 font-medium">
-                        <div class="text-start"><span class="text-gray-500 block text-[11px]">الهجري</span><span id="t-eid-fitr-hijri" class="text-gray-900 font-bold">04 شوال 1448</span></div>
-                        <div class="text-end"><span class="text-gray-500 block text-[11px]">الميلادي المتوقع</span><span id="t-eid-fitr-greg" class="text-emerald-800 font-bold">12 مارس 2027</span></div>
-                    </div>
-                    <div class="text-xs md:text-sm font-black text-center text-emerald-800 bg-white/90 py-2.5 rounded-xl border border-emerald-200/40 shadow-inner" id="timer-eid-fitr" data-target="2027-03-12T16:00">جاري الحساب...</div>
-                </div>
-            </div>
-
-            <div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px] md:col-span-2 md:max-w-[calc(50%-14px)] md:mx-auto md:w-full" onclick="openModal('eid-adha')">
-                <div>
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-700 shadow-sm">
-                            <i class="fa-solid fa-handshake-angle text-lg md:text-xl"></i>
-                        </div>
-                        <span id="t-eid-adha-badge" class="text-xs md:text-[13px] font-black text-emerald-800 bg-emerald-100/60 border border-emerald-200/60 px-3 py-1 rounded-full">ختام الدورة</span>
-                    </div>
-                    <h3 id="t-eid-adha-title" class="text-xl md:text-2xl font-bold text-gray-900 mb-2">🐑 ملتقى عيد الأضحى المبارك</h3>
-                    <p id="t-eid-adha-desc" class="text-gray-600 text-sm md:text-base leading-relaxed">معايدة مباركة وختام الدورة باستعراض المصروفات والموجودات في صندوق مجلس العائلة.</p>
-                </div>
-                <div class="mt-5">
-                    <div class="flex justify-between items-center bg-white/75 p-3 rounded-xl border border-yellow-900/10 text-sm mb-2 font-medium">
-                        <div class="text-start"><span class="text-gray-500 block text-[11px]">الهجري</span><span id="t-eid-adha-hijri" class="text-gray-900 font-bold">13 ذو الحجة 1448</span></div>
-                        <div class="text-end"><span class="text-gray-500 block text-[11px]">الميلادي المتوقع</span><span id="t-eid-adha-greg" class="text-emerald-800 font-bold">19 مايو 2027</span></div>
-                    </div>
-                    <div class="text-xs md:text-sm font-black text-center text-emerald-800 bg-white/90 py-2.5 rounded-xl border border-emerald-200/40 shadow-inner" id="timer-eid-adha" data-target="2027-05-19T16:00">جاري الحساب...</div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="mt-8 bg-emerald-950/40 border border-yellow-700/30 rounded-xl p-3 text-center backdrop-blur-sm">
-            <p id="t-footer-note" class="text-xs md:text-sm text-yellow-100 font-bold"><i class="fa-solid fa-lightbulb text-yellow-400 ml-1"></i> تنويه تنظيمي: جميع التواريخ الميلادية للمناسبات الدينية تتبع تقويم أم القرى الرسمي المعتمد.</p>
-        </div>
-
-    </div>
-
-    <div id="detailsModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 bg-emerald-950/60 backdrop-blur-md">
-        <div class="premium-modal w-full max-w-2xl rounded-3xl p-5 md:p-8 shadow-2xl relative text-right max-h-[85vh] overflow-y-auto">
-            <button onclick="closeModal()" aria-label="إغلاق" class="absolute top-4 left-4 w-9 h-9 rounded-full bg-emerald-950/10 flex items-center justify-center text-gray-700 hover:bg-emerald-950/20 shadow-md transition-all">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div id="modalContent"></div>
-        </div>
-    </div>
-
-    <script type="application/json" id="cfg-json">
+<p class="text-emerald-100/95 text-xs md:text-base mt-2 font-bold">نلتقي على المحبة… ونستعد لموسم جديد يجمعنا</p>
+<hr class="divider-gold mt-5"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-7" id="season-grid">
+<div class="spatial-bento-card spatial-bento-card-critical rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" id="subscription-card" onclick="openModal('deadline')">
+<div>
+<div class="flex justify-between items-center mb-4">
+<div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-600 shadow-sm">
+<i class="fa-solid fa-triangle-exclamation text-lg md:text-xl"></i>
+</div>
+<span class="text-xs md:text-[13px] font-black text-red-700 bg-red-100/60 border border-red-200/60 px-3 py-1 rounded-full" id="t-deadline-badge">تنظيم مالي</span>
+</div>
+<h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2" id="t-deadline-title">آخر موعد لسداد الاشتراك</h3>
+<p class="text-gray-600 text-sm md:text-base leading-relaxed" id="t-deadline-desc">بادر بسداد اشتراكك لتأكيد مشاركتك في موسم ملتقيات مجلس العائلة.</p>
+</div>
+<div class="mt-5">
+<div class="flex justify-between items-center bg-white/75 p-3 rounded-xl border border-yellow-900/10 text-sm mb-2 font-medium">
+<div class="text-start"><span class="text-gray-500 block text-[11px]">الهجري</span><span class="text-gray-900 font-bold" id="t-deadline-hijri">30 جمادى الأولى 1448</span></div>
+<div class="text-end"><span class="text-gray-500 block text-[11px]">الميلادي</span><span class="text-gray-900 font-bold" id="t-deadline-greg">09 نوفمبر 2026</span></div>
+</div>
+<div class="text-xs md:text-sm font-black text-center text-red-600 bg-white/90 py-2.5 rounded-xl border border-red-200/50 shadow-inner" data-target="2026-11-09T23:59" id="timer-deadline">جاري الحساب...</div>
+</div>
+</div><section id="season-intro"><span>موسم 1448 هـ</span><h2>موسم يجمعنا… ولقاءات نترقّبها</h2><p>تُعلَن مواعيد ملتقيات الموسم وتفاصيلها للمشتركين بعد انتهاء فترة السداد واكتمال تأكيد الاشتراكات.</p></section>
+<div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" data-season-card="winter" onclick="openModal('winter')" tabindex="0">
+<div>
+<div class="flex justify-between items-center mb-4">
+<div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-800 shadow-sm">
+<i class="fa-solid fa-snowflake text-lg md:text-xl"></i>
+</div>
+<span class="text-xs md:text-[13px] font-black text-emerald-800 bg-emerald-100/60 border border-emerald-200/60 px-3 py-1 rounded-full" id="t-winter-badge">الملتقى الأول</span>
+</div>
+<h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2" id="t-winter-title">❄️ الحفل الشتوي السنوي</h3>
+<p class="text-gray-600 text-sm md:text-base leading-relaxed" id="t-winter-desc">افتتاح موسم الملتقيات بلقاء عائلي ومخيم بري مميز، وتكريم المتفوقين والمتفوقات.</p>
+</div>
+<div class="mt-5">
+<div class="flex justify-between items-center bg-white/75 p-3 rounded-xl border border-yellow-900/10 text-sm mb-2 font-medium">
+<div class="text-start"><span class="text-gray-500 block text-[11px]">الهجري</span><span class="text-gray-900 font-bold" id="t-winter-hijri">09 رجب 1448</span></div>
+<div class="text-end"><span class="text-gray-500 block text-[11px]">الميلادي</span><span class="text-emerald-800 font-bold" id="t-winter-greg">18 ديسمبر 2026</span></div>
+</div>
+<div class="text-xs md:text-sm font-black text-center text-emerald-800 bg-white/90 py-2.5 rounded-xl border border-emerald-200/40 shadow-inner" data-target="2026-12-18T16:00" id="timer-winter">جاري الحساب...</div>
+</div>
+<p class="coming-label">🔒 التفاصيل قريباً للمشتركين</p></div>
+<div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" data-season-card="ramadan" onclick="openModal('ramadan')" tabindex="0">
+<div>
+<div class="flex justify-between items-center mb-4">
+<div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-800 shadow-sm">
+<i class="fa-solid fa-mosque text-lg md:text-xl"></i>
+</div>
+<span class="text-xs md:text-[13px] font-black text-emerald-800 bg-emerald-100/60 border border-emerald-200/60 px-3 py-1 rounded-full" id="t-ramadan-badge">روحانيات</span>
+</div>
+<h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2" id="t-ramadan-title">🌙 الإفطار الرمضاني التشاركي</h3>
+<p class="text-gray-600 text-sm md:text-base leading-relaxed" id="t-ramadan-desc">إفطار تشاركي وليلة إيمانية: كل عضو يصطحب طبقاً، ولمّتنا على مائدة واحدة.</p>
+</div>
+<div class="mt-5">
+<div class="flex justify-between items-center bg-white/75 p-3 rounded-xl border border-yellow-900/10 text-sm mb-2 font-medium">
+<div class="text-start"><span class="text-gray-500 block text-[11px]">الهجري</span><span class="text-gray-900 font-bold" id="t-ramadan-hijri">05 رمضان 1448</span></div>
+<div class="text-end"><span class="text-gray-500 block text-[11px]">الميلادي المتوقع</span><span class="text-emerald-800 font-bold" id="t-ramadan-greg">12 فبراير 2027</span></div>
+</div>
+<div class="text-xs md:text-sm font-black text-center text-emerald-800 bg-white/90 py-2.5 rounded-xl border border-emerald-200/40 shadow-inner" data-target="2027-02-12T17:30" id="timer-ramadan">جاري الحساب...</div>
+</div>
+<p class="coming-label">🔒 التفاصيل قريباً للمشتركين</p></div>
+<div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" data-season-card="eid-fitr" onclick="openModal('eid-fitr')" tabindex="0">
+<div>
+<div class="flex justify-between items-center mb-4">
+<div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-700 shadow-sm">
+<i class="fa-solid fa-wand-magic-sparkles text-lg md:text-xl"></i>
+</div>
+<span class="text-xs md:text-[13px] font-black text-emerald-800 bg-emerald-100/60 border border-emerald-200/60 px-3 py-1 rounded-full" id="t-eid-fitr-badge">بهجة العيد</span>
+</div>
+<h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2" id="t-eid-fitr-title">🎈 ملتقى عيد الفطر السعيد</h3>
+<p class="text-gray-600 text-sm md:text-base leading-relaxed" id="t-eid-fitr-desc">المعايدة السنوية الكبرى وتوزيع هدايا العيد على الأطفال والاحتفاء بصلات الرحم.</p>
+</div>
+<div class="mt-5">
+<div class="flex justify-between items-center bg-white/75 p-3 rounded-xl border border-yellow-900/10 text-sm mb-2 font-medium">
+<div class="text-start"><span class="text-gray-500 block text-[11px]">الهجري</span><span class="text-gray-900 font-bold" id="t-eid-fitr-hijri">04 شوال 1448</span></div>
+<div class="text-end"><span class="text-gray-500 block text-[11px]">الميلادي المتوقع</span><span class="text-emerald-800 font-bold" id="t-eid-fitr-greg">12 مارس 2027</span></div>
+</div>
+<div class="text-xs md:text-sm font-black text-center text-emerald-800 bg-white/90 py-2.5 rounded-xl border border-emerald-200/40 shadow-inner" data-target="2027-03-12T16:00" id="timer-eid-fitr">جاري الحساب...</div>
+</div>
+<p class="coming-label">🔒 التفاصيل قريباً للمشتركين</p></div>
+<div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px] md:col-span-2 md:max-w-[calc(50%-14px)] md:mx-auto md:w-full" data-season-card="eid-adha" onclick="openModal('eid-adha')" tabindex="0">
+<div>
+<div class="flex justify-between items-center mb-4">
+<div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-700 shadow-sm">
+<i class="fa-solid fa-handshake-angle text-lg md:text-xl"></i>
+</div>
+<span class="text-xs md:text-[13px] font-black text-emerald-800 bg-emerald-100/60 border border-emerald-200/60 px-3 py-1 rounded-full" id="t-eid-adha-badge">ختام الدورة</span>
+</div>
+<h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2" id="t-eid-adha-title">🐑 ملتقى عيد الأضحى المبارك</h3>
+<p class="text-gray-600 text-sm md:text-base leading-relaxed" id="t-eid-adha-desc">معايدة مباركة وختام الدورة باستعراض المصروفات والموجودات في صندوق مجلس العائلة.</p>
+</div>
+<div class="mt-5">
+<div class="flex justify-between items-center bg-white/75 p-3 rounded-xl border border-yellow-900/10 text-sm mb-2 font-medium">
+<div class="text-start"><span class="text-gray-500 block text-[11px]">الهجري</span><span class="text-gray-900 font-bold" id="t-eid-adha-hijri">13 ذو الحجة 1448</span></div>
+<div class="text-end"><span class="text-gray-500 block text-[11px]">الميلادي المتوقع</span><span class="text-emerald-800 font-bold" id="t-eid-adha-greg">19 مايو 2027</span></div>
+</div>
+<div class="text-xs md:text-sm font-black text-center text-emerald-800 bg-white/90 py-2.5 rounded-xl border border-emerald-200/40 shadow-inner" data-target="2027-05-19T16:00" id="timer-eid-adha">جاري الحساب...</div>
+</div>
+<p class="coming-label">🔒 التفاصيل قريباً للمشتركين</p></div>
+</div>
+<div class="mt-8 bg-emerald-950/40 border border-yellow-700/30 rounded-xl p-3 text-center backdrop-blur-sm">
+<p class="text-xs md:text-sm text-yellow-100 font-bold" id="t-footer-note"><i class="fa-solid fa-lightbulb text-yellow-400 ml-1"></i> تنويه تنظيمي: جميع التواريخ الميلادية للمناسبات الدينية تتبع تقويم أم القرى الرسمي المعتمد.</p>
+</div>
+</div>
+<div class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 bg-emerald-950/60 backdrop-blur-md" id="detailsModal">
+<div class="premium-modal w-full max-w-2xl rounded-3xl p-5 md:p-8 shadow-2xl relative text-right max-h-[85vh] overflow-y-auto">
+<button aria-label="إغلاق" class="absolute top-4 left-4 w-9 h-9 rounded-full bg-emerald-950/10 flex items-center justify-center text-gray-700 hover:bg-emerald-950/20 shadow-md transition-all" onclick="closeModal()">
+<i class="fa-solid fa-xmark text-lg"></i>
+</button>
+<div id="modalContent"></div>
+</div>
+</div>
+<script id="cfg-json" type="application/json">
     {
         "events": {
             "deadline": {
@@ -280,8 +295,7 @@
         }
     }
     </script>
-
-    <script>
+<script>
         var EVENTS = ["deadline", "winter", "ramadan", "eid-fitr", "eid-adha"];
         var EVENT_LABELS = {
             "deadline": "📌 الموعد النهائي للسداد",
@@ -290,7 +304,7 @@
             "eid-fitr": "🎈 عيد الفطر",
             "eid-adha": "🐑 عيد الأضحى"
         };
-        var STORE_KEY = "roznamah-1448-v1";
+        var STORE_KEY = "roznamah-1448-teaser-v8";
 
         function cfg() { return JSON.parse(document.getElementById("cfg-json").textContent); }
         function saveCfg(obj) { document.getElementById("cfg-json").textContent = JSON.stringify(obj, null, 2); }
@@ -300,31 +314,23 @@
 
         /* ========== العدادات التنازلية ========== */
         function parseTarget(s) {
-            var p = s.split("T")[0].split("-"), t = s.split("T")[1].split(":");
-            return new Date(+p[0], (+p[1]) - 1, +p[2], +t[0], +t[1], 0).getTime();
+            var m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(s || '');
+            if (!m) return NaN;
+            return Date.UTC(+m[1],+m[2]-1,+m[3],+m[4]-3,+m[5],0);
         }
-
-        function updateTimers() {
-            var now = Date.now();
-            for (var i = 0; i < EVENTS.length; i++) {
-                var el = byId("timer-" + EVENTS[i]);
-                if (!el) continue;
-                var ts = el.getAttribute("data-target");
-                if (!ts) continue;
-                var diff = parseTarget(ts) - now;
-                if (isNaN(diff)) { el.textContent = "⚠️ تحقق من صيغة التاريخ في لوحة التحكم"; continue; }
-                if (diff < 0) {
-                    el.textContent = "✅ انقضت المناسبة بنجاح";
-                    el.className = "text-xs font-bold text-center text-gray-400 bg-white/40 py-2 rounded-xl border border-gray-200/60 shadow-inner";
-                    continue;
-                }
-                var ddd = Math.floor(diff / 86400000);
-                var hhh = Math.floor((diff % 86400000) / 3600000);
-                el.textContent = "⏳ متبقي: " + ddd + " يوم و " + hhh + " ساعة";
-            }
+        function updateTimers(){
+          EVENTS.forEach(function(id){
+            var el=byId('timer-'+id); if(!el)return;
+            var diff=parseTarget(el.getAttribute('data-target'))-Date.now();
+            if(!isFinite(diff)){el.textContent='يرجى تحديد تاريخ ووقت صحيحين';return;}
+            if(diff<=0){el.textContent=id==='deadline'?'انتهت فترة السداد':'حلّ موعد المناسبة';return;}
+            var seconds=Math.floor(diff/1000), days=Math.floor(seconds/86400), hours=Math.floor(seconds%86400/3600), mins=Math.floor(seconds%3600/60), secs=seconds%60;
+            if(id==='deadline'){
+              el.innerHTML='<div>المتبقي على انتهاء فترة السداد</div><div class="count-units">'+[[days,'يوم'],[hours,'ساعة'],[mins,'دقيقة'],[secs,'ثانية']].map(function(x){return '<div class="count-unit"><strong>'+String(x[0]).padStart(2,'0')+'</strong><span>'+x[1]+'</span></div>';}).join('')+'</div>';
+            }else{el.textContent='متبقي: '+days+' يوم و '+hours+' ساعة';}
+          });
         }
-        updateTimers();
-        setInterval(updateTimers, 60000);
+        updateTimers(); setInterval(updateTimers,1000);
 
         /* ========== نافذة التفاصيل ========== */
         var EVENT_ICONS = {
@@ -336,6 +342,7 @@
         };
 
         function openModal(id) {
+            if (document.body.getAttribute("data-season-mode") === "teaser" && id !== "deadline") return;
             var data = cfg().events[id];
             var ic = EVENT_ICONS[id];
             if (!data || !ic) return;
@@ -401,7 +408,7 @@
 
         /* ========== لوحة التحكم ========== */
         function snapshotNow() {
-            var snap = { fields: {}, targets: {}, extra: cfg().events, pin: getPin() };
+            var snap = { fields: {}, targets: {}, extra: cfg().events, pin: getPin(), seasonMode: document.body.getAttribute("data-season-mode") };
             EVENTS.forEach(function(ev) {
                 ["title", "desc", "badge", "hijri", "greg"].forEach(function(f) {
                     snap.fields["t-" + ev + "-" + f] = byId("t-" + ev + "-" + f).textContent;
@@ -414,6 +421,7 @@
 
         function applySnapshot(snap) {
             if (!snap) return;
+            if (snap.seasonMode) document.body.setAttribute("data-season-mode",snap.seasonMode === "full" ? "full" : "teaser");
             if (snap.pin) setPin(snap.pin);
             if (snap.fields) {
                 for (var k in snap.fields) {
@@ -488,6 +496,15 @@
                 '</div></div>';
 
             document.body.appendChild(wrap);
+            var modeBox=document.createElement('div');
+            modeBox.style.cssText='padding:16px;background:#eaf5ef;border-radius:12px;margin:16px;color:#123e2d';
+            var modeLabel=document.createElement('label');
+            modeLabel.textContent=' عرض روزنامة الموسم كاملة (إلغاء العرض التشويقي) ';
+            var modeInput=document.createElement('input');modeInput.type='checkbox';modeInput.checked=document.body.getAttribute('data-season-mode')==='full';
+            modeInput.onchange=function(){document.body.setAttribute('data-season-mode',this.checked?'full':'teaser');};
+            modeLabel.prepend(modeInput);modeBox.appendChild(modeLabel);
+            var tzNote=document.createElement('p');tzNote.textContent='توقيت العد التنازلي: السعودية (UTC+3). الحفظ المحلي لجهازك فقط؛ لنشر التعديلات صدّر الملف وارفعه إلى GitHub.';modeBox.appendChild(tzNote);
+            wrap.firstElementChild.insertBefore(modeBox,wrap.firstElementChild.children[1]);
 
             wrap.querySelectorAll('[data-ev]').forEach(function(inp) {
                 inp.addEventListener('input', function() {
