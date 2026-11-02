@@ -90,32 +90,31 @@
         }
     </style>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Tajawal,Arial,sans-serif;padding:14px;color:#17251e;line-height:1.7}
+*{box-sizing:border-box}body{margin:0;padding:12px;font-family:Tajawal,Arial,sans-serif;line-height:1.8}
 .immersive-container{width:100%;max-width:1024px;margin:14px auto;padding:32px;border-radius:28px}
-h1{font-size:clamp(24px,5vw,38px);line-height:1.5;text-align:center}h3{line-height:1.6}
+h1{font-size:clamp(24px,5vw,38px);line-height:1.5;text-align:center}
 #season-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
 .spatial-bento-card{padding:24px;border-radius:24px;min-width:0;display:flex;flex-direction:column;justify-content:space-between}
-.spatial-bento-card h3{font-size:22px;margin:14px 0 8px}.spatial-bento-card p{font-size:17px;line-height:1.9}
-#subscription-card{grid-column:1/-1;width:100%;max-width:740px;margin:auto;border-color:#c9a24b;background:#fffaf0}
+.spatial-bento-card h3{font-size:22px;line-height:1.6;margin:14px 0 8px}.spatial-bento-card p{font-size:17px;line-height:1.9}
+#subscription-card{grid-column:1/-1;width:100%;max-width:740px;margin:auto;background:#fffaf0;border-color:#c9a24b}
 #subscription-card h3{font-size:clamp(24px,5vw,32px)}
-#subscription-card [id$="-hijri"],#subscription-card [id$="-greg"]{font-size:16px;font-weight:700}
-#subscription-card .mt-5>div:first-child{display:flex;justify-content:space-between;gap:14px;padding:14px;background:#fff;border-radius:14px;margin-top:20px}
+#subscription-card .mt-5>div:first-child{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:14px;background:white;border-radius:14px;margin-top:20px;font-size:16px}
 #subscription-card .mt-5>div:first-child span{display:block}
 #timer-deadline{margin-top:16px;padding:18px 8px!important;background:#123e2d!important;color:#fff2cd!important;border-radius:18px;font-size:18px!important;text-align:center}
+#timer-deadline.countdown-urgent{background:#a51e2c!important;color:white!important;border:2px solid #ed8490!important}
 .count-units{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;direction:rtl;margin-top:10px}
-.count-unit strong{display:block;font-size:clamp(26px,7vw,42px);line-height:1.3;font-variant-numeric:tabular-nums}.count-unit span{font-size:14px}.count-unit{padding:10px 2px;background:#ffffff12;border-radius:12px}
-#season-intro{grid-column:1/-1;text-align:center;color:#f4eedb;padding:12px 0 0}#season-intro h2{font-size:24px;margin:8px 0}#season-intro p{font-size:17px;max-width:650px;margin:auto;line-height:1.9}#season-intro>span{color:#e1bf6c;font-size:15px}
+.count-unit{padding:10px 2px;background:#ffffff12;border-radius:12px}.count-unit strong{display:block;font-size:clamp(26px,7vw,42px);line-height:1.3;font-variant-numeric:tabular-nums}.count-unit span{font-size:14px}
+#subscription-card .details-hint{font-size:14px!important;color:#657065;text-align:center;margin:12px 0 0}
+#season-intro{grid-column:1/-1;text-align:center;color:#f4eedb;padding:12px 0 0}#season-intro h2{font-size:24px;margin:8px 0}#season-intro p{font-size:17px;max-width:650px;margin:auto;line-height:1.9}
 .coming-label{display:none;color:#796021;font-weight:700}
 body[data-season-mode="teaser"] [data-season-card]{cursor:default;min-height:0!important;max-width:none!important;grid-column:auto!important;width:100%!important;margin:0!important;padding:22px}
-body[data-season-mode="teaser"] [data-season-card]>div:first-child>div:first-child,
-body[data-season-mode="teaser"] [data-season-card] [id$="-desc"],body[data-season-mode="teaser"] [data-season-card]>div.mt-5{display:none!important}
+body[data-season-mode="teaser"] [data-season-card]>div:first-child>div:first-child,body[data-season-mode="teaser"] [data-season-card] [id$="-desc"],body[data-season-mode="teaser"] [data-season-card]>div.mt-5{display:none!important}
 body[data-season-mode="teaser"] .coming-label{display:block;font-size:15px;margin:8px 0 0}
 body[data-season-mode="full"] #season-intro{display:none}
 .admin-input{font-size:16px!important;min-height:48px}.admin-label{font-size:15px!important}#adminPanel button{min-height:44px}
-#detailsModal.hidden{display:none}#detailsModal:not(.hidden){display:flex;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;background:#05190fbb;padding:16px}
-.premium-modal{padding:26px;border-radius:24px;max-height:85dvh;overflow:auto;width:min(100%,680px)}
+#detailsModal.hidden{display:none}#detailsModal:not(.hidden){display:flex;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;background:#05190fbb;padding:16px}.premium-modal{padding:26px;border-radius:24px;max-height:85dvh;overflow:auto;width:min(100%,680px)}
 #t-footer-note{font-size:15px;line-height:1.8}
-@media(max-width:600px){body{padding:10px!important}.immersive-container{padding:18px!important;margin:0 auto!important;border-radius:24px!important}#season-grid{grid-template-columns:1fr;gap:14px}.spatial-bento-card{padding:20px!important}.spatial-bento-card h3{font-size:22px}#subscription-card .mt-5>div:first-child{flex-wrap:wrap}#season-intro h2{font-size:22px}#season-intro p{font-size:16px}#subscription-card [id$="-hijri"],#subscription-card [id$="-greg"]{font-size:16px}}
+@media(max-width:600px){body{padding:10px!important}.immersive-container{padding:18px!important;margin:0 auto!important;border-radius:24px!important}#season-grid{grid-template-columns:1fr;gap:14px}.spatial-bento-card{padding:20px!important}#season-intro h2{font-size:22px}#season-intro p{font-size:16px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.spatial-bento-card{transform:none!important}}
 </style></head>
 <body class="min-h-screen py-3 px-3 sm:px-5 lg:px-8 text-gray-800" data-season-mode="teaser">
@@ -151,8 +150,8 @@ body[data-season-mode="full"] #season-intro{display:none}
 </div>
 <div class="text-xs md:text-sm font-black text-center text-red-600 bg-white/90 py-2.5 rounded-xl border border-red-200/50 shadow-inner" data-target="2026-11-09T23:59" id="timer-deadline">جاري الحساب...</div>
 </div>
-</div><section id="season-intro"><span>موسم 1448 هـ</span><h2>موسم يجمعنا… ولقاءات نترقّبها</h2><p>تُعلَن مواعيد ملتقيات الموسم وتفاصيلها للمشتركين بعد انتهاء فترة السداد واكتمال تأكيد الاشتراكات.</p></section>
-<div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" data-season-card="winter" onclick="openModal('winter')" tabindex="0">
+<p class="details-hint">للتفاصيل اضغط على البطاقة</p></div><section id="season-intro"><h2>موسم يجمعنا… ولقاءات نترقّبها</h2><p>تُعلَن مواعيد ملتقيات الموسم وتفاصيلها للمشتركين بعد انتهاء فترة السداد واكتمال تأكيد الاشتراكات.</p></section>
+<div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" data-season-card="winter" onclick="openModal('winter')">
 <div>
 <div class="flex justify-between items-center mb-4">
 <div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-800 shadow-sm">
@@ -171,7 +170,7 @@ body[data-season-mode="full"] #season-intro{display:none}
 <div class="text-xs md:text-sm font-black text-center text-emerald-800 bg-white/90 py-2.5 rounded-xl border border-emerald-200/40 shadow-inner" data-target="2026-12-18T16:00" id="timer-winter">جاري الحساب...</div>
 </div>
 <p class="coming-label">🔒 التفاصيل قريباً للمشتركين</p></div>
-<div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" data-season-card="ramadan" onclick="openModal('ramadan')" tabindex="0">
+<div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" data-season-card="ramadan" onclick="openModal('ramadan')">
 <div>
 <div class="flex justify-between items-center mb-4">
 <div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-800 shadow-sm">
@@ -190,7 +189,7 @@ body[data-season-mode="full"] #season-intro{display:none}
 <div class="text-xs md:text-sm font-black text-center text-emerald-800 bg-white/90 py-2.5 rounded-xl border border-emerald-200/40 shadow-inner" data-target="2027-02-12T17:30" id="timer-ramadan">جاري الحساب...</div>
 </div>
 <p class="coming-label">🔒 التفاصيل قريباً للمشتركين</p></div>
-<div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" data-season-card="eid-fitr" onclick="openModal('eid-fitr')" tabindex="0">
+<div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px]" data-season-card="eid-fitr" onclick="openModal('eid-fitr')">
 <div>
 <div class="flex justify-between items-center mb-4">
 <div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-700 shadow-sm">
@@ -209,7 +208,7 @@ body[data-season-mode="full"] #season-intro{display:none}
 <div class="text-xs md:text-sm font-black text-center text-emerald-800 bg-white/90 py-2.5 rounded-xl border border-emerald-200/40 shadow-inner" data-target="2027-03-12T16:00" id="timer-eid-fitr">جاري الحساب...</div>
 </div>
 <p class="coming-label">🔒 التفاصيل قريباً للمشتركين</p></div>
-<div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px] md:col-span-2 md:max-w-[calc(50%-14px)] md:mx-auto md:w-full" data-season-card="eid-adha" onclick="openModal('eid-adha')" tabindex="0">
+<div class="spatial-bento-card rounded-[24px] p-5 md:p-8 flex flex-col justify-between md:min-h-[300px] md:col-span-2 md:max-w-[calc(50%-14px)] md:mx-auto md:w-full" data-season-card="eid-adha" onclick="openModal('eid-adha')">
 <div>
 <div class="flex justify-between items-center mb-4">
 <div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-700 shadow-sm">
@@ -230,7 +229,7 @@ body[data-season-mode="full"] #season-intro{display:none}
 <p class="coming-label">🔒 التفاصيل قريباً للمشتركين</p></div>
 </div>
 <div class="mt-8 bg-emerald-950/40 border border-yellow-700/30 rounded-xl p-3 text-center backdrop-blur-sm">
-<p class="text-xs md:text-sm text-yellow-100 font-bold" id="t-footer-note"><i class="fa-solid fa-lightbulb text-yellow-400 ml-1"></i> تنويه تنظيمي: جميع التواريخ الميلادية للمناسبات الدينية تتبع تقويم أم القرى الرسمي المعتمد.</p>
+<p class="text-xs md:text-sm text-yellow-100 font-bold" id="t-footer-note">تنويه: في حال اختلاف التاريخين الهجري والميلادي، يُعتمد التاريخ الميلادي.</p>
 </div>
 </div>
 <div class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 bg-emerald-950/60 backdrop-blur-md" id="detailsModal">
@@ -304,7 +303,7 @@ body[data-season-mode="full"] #season-intro{display:none}
             "eid-fitr": "🎈 عيد الفطر",
             "eid-adha": "🐑 عيد الأضحى"
         };
-        var STORE_KEY = "roznamah-1448-teaser-v8";
+        var STORE_KEY = "roznamah-1448-teaser-v9";
 
         function cfg() { return JSON.parse(document.getElementById("cfg-json").textContent); }
         function saveCfg(obj) { document.getElementById("cfg-json").textContent = JSON.stringify(obj, null, 2); }
@@ -314,23 +313,22 @@ body[data-season-mode="full"] #season-intro{display:none}
 
         /* ========== العدادات التنازلية ========== */
         function parseTarget(s) {
-            var m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(s || '');
-            if (!m) return NaN;
-            return Date.UTC(+m[1],+m[2]-1,+m[3],+m[4]-3,+m[5],0);
-        }
-        function updateTimers(){
-          EVENTS.forEach(function(id){
-            var el=byId('timer-'+id); if(!el)return;
-            var diff=parseTarget(el.getAttribute('data-target'))-Date.now();
-            if(!isFinite(diff)){el.textContent='يرجى تحديد تاريخ ووقت صحيحين';return;}
-            if(diff<=0){el.textContent=id==='deadline'?'انتهت فترة السداد':'حلّ موعد المناسبة';return;}
-            var seconds=Math.floor(diff/1000), days=Math.floor(seconds/86400), hours=Math.floor(seconds%86400/3600), mins=Math.floor(seconds%3600/60), secs=seconds%60;
-            if(id==='deadline'){
-              el.innerHTML='<div>المتبقي على انتهاء فترة السداد</div><div class="count-units">'+[[days,'يوم'],[hours,'ساعة'],[mins,'دقيقة'],[secs,'ثانية']].map(function(x){return '<div class="count-unit"><strong>'+String(x[0]).padStart(2,'0')+'</strong><span>'+x[1]+'</span></div>';}).join('')+'</div>';
-            }else{el.textContent='متبقي: '+days+' يوم و '+hours+' ساعة';}
-          });
-        }
-        updateTimers(); setInterval(updateTimers,1000);
+ var m=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(s||'');
+ return m?Date.UTC(+m[1],+m[2]-1,+m[3],+m[4]-3,+m[5],0):NaN;
+}
+function updateTimers(){
+ EVENTS.forEach(function(id){
+ var el=byId('timer-'+id);if(!el)return;
+ var diff=parseTarget(el.getAttribute('data-target'))-Date.now();
+ el.classList.toggle('countdown-urgent',id==='deadline'&&isFinite(diff)&&diff>0&&diff<=72*3600000);
+ if(!isFinite(diff)){el.textContent='يرجى تحديد تاريخ ووقت صحيحين';return;}
+ if(diff<=0){el.textContent=id==='deadline'?'انتهت فترة السداد':'حلّ موعد المناسبة';return;}
+ var sec=Math.floor(diff/1000),d=Math.floor(sec/86400),h=Math.floor(sec%86400/3600),m=Math.floor(sec%3600/60),ss=sec%60;
+ if(id==='deadline'){el.innerHTML='<div>المتبقي على انتهاء فترة السداد</div><div class="count-units">'+[[d,'يوم'],[h,'ساعة'],[m,'دقيقة'],[ss,'ثانية']].map(function(x){return '<div class="count-unit"><strong>'+String(x[0]).padStart(2,'0')+'</strong><span>'+x[1]+'</span></div>';}).join('')+'</div>';}
+ else{el.textContent='متبقي: '+d+' يوم و '+h+' ساعة';}
+ });
+}
+updateTimers();setInterval(updateTimers,1000);
 
         /* ========== نافذة التفاصيل ========== */
         var EVENT_ICONS = {
@@ -421,7 +419,7 @@ body[data-season-mode="full"] #season-intro{display:none}
 
         function applySnapshot(snap) {
             if (!snap) return;
-            if (snap.seasonMode) document.body.setAttribute("data-season-mode",snap.seasonMode === "full" ? "full" : "teaser");
+ if(snap.seasonMode)document.body.setAttribute("data-season-mode",snap.seasonMode === "full" ? "full" : "teaser");
             if (snap.pin) setPin(snap.pin);
             if (snap.fields) {
                 for (var k in snap.fields) {
@@ -496,15 +494,11 @@ body[data-season-mode="full"] #season-intro{display:none}
                 '</div></div>';
 
             document.body.appendChild(wrap);
-            var modeBox=document.createElement('div');
-            modeBox.style.cssText='padding:16px;background:#eaf5ef;border-radius:12px;margin:16px;color:#123e2d';
-            var modeLabel=document.createElement('label');
-            modeLabel.textContent=' عرض روزنامة الموسم كاملة (إلغاء العرض التشويقي) ';
-            var modeInput=document.createElement('input');modeInput.type='checkbox';modeInput.checked=document.body.getAttribute('data-season-mode')==='full';
-            modeInput.onchange=function(){document.body.setAttribute('data-season-mode',this.checked?'full':'teaser');};
-            modeLabel.prepend(modeInput);modeBox.appendChild(modeLabel);
-            var tzNote=document.createElement('p');tzNote.textContent='توقيت العد التنازلي: السعودية (UTC+3). الحفظ المحلي لجهازك فقط؛ لنشر التعديلات صدّر الملف وارفعه إلى GitHub.';modeBox.appendChild(tzNote);
-            wrap.firstElementChild.insertBefore(modeBox,wrap.firstElementChild.children[1]);
+var box=document.createElement('div');box.style.cssText='padding:16px;margin:16px;background:#eaf5ef;border-radius:12px';
+var lab=document.createElement('label');lab.textContent=' عرض روزنامة الموسم كاملة (إلغاء العرض التشويقي)';
+var cb=document.createElement('input');cb.type='checkbox';cb.checked=document.body.getAttribute('data-season-mode')==='full';cb.onchange=function(){document.body.setAttribute('data-season-mode',this.checked?'full':'teaser');};lab.prepend(cb);box.appendChild(lab);
+var note=document.createElement('p');note.textContent='توقيت العد التنازلي: السعودية (UTC+3). الحفظ المحلي لجهازك فقط؛ للنشر صدّر الملف وارفعه إلى GitHub.';box.appendChild(note);
+wrap.firstElementChild.insertBefore(box,wrap.firstElementChild.children[1]);
 
             wrap.querySelectorAll('[data-ev]').forEach(function(inp) {
                 inp.addEventListener('input', function() {
